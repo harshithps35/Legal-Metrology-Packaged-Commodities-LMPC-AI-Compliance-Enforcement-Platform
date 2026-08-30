@@ -206,8 +206,7 @@ export default function NoticeRectification() {
     );
     setDeclaredMrp(group.declared_mrp || '');
     setDeclaredNetQty(group.declared_net_quantity || '');
-    setFile(null);
-    setPreview(null);
+    setProofFiles([]);
   };
 
   const handleFileChange = (e) => {

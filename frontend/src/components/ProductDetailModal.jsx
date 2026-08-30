@@ -276,15 +276,8 @@ export default function ProductDetailModal({ product, onClose, onActionSuccess }
     }
     try {
       setSubmittingRouting(true);
-      try {
-        await subInspectorAPI.forwardToLeadInspector(appId);
-      } catch (subErr) {
-        await inspectorAPI.verifyPreMarket(appId, {
-          decision: 'FORWARD_TO_ALMO',
-          inspector_notes: 'Pre-market packaging artwork verified compliant. Issued to Lead Inspector.',
-        });
-      }
-      toast.success('Successfully issued to Lead Inspector for statutory review!');
+      const res = await subInspectorAPI.forwardToLeadInspector(appId);
+      toast.success(res.data?.message || 'Successfully issued to Lead Inspector for statutory review!');
       if (product.onUpdated) product.onUpdated();
       if (onActionSuccess) onActionSuccess(appId);
       onClose();

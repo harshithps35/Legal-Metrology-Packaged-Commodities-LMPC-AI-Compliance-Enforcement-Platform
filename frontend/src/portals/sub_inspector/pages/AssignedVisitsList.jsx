@@ -113,8 +113,6 @@ export default function AssignedVisitsList() {
           vStatus !== 'CO_SIGNED' &&
           vStatus !== 'FORWARDED' &&
           !v.visit_report_submitted &&
-          !v.sub_inspector_verified &&
-          appStatus !== 'pending_inspector' &&
           appStatus !== 'pending_almo_sanction' &&
           appStatus !== 'pending_clmo_approval' &&
           appStatus !== 'pending_supervisor' &&

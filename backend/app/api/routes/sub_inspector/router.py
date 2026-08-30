@@ -102,26 +102,17 @@ async def get_sub_inspector_visits(
     output = []
     for o in orders:
         v_status = str(o.visit_status or "").upper()
-        if v_status in ["COMPLETED", "APPROVED", "FORWARDED", "RESOLVED", "CLOSED"]:
-            continue
-        if o.visit_report_submitted:
-            continue
-
-        app_res = await db.execute(select(PreMarketApplication).where(PreMarketApplication.id == o.application_id))
-        app = app_res.scalar_one_or_none()
+        app = None
+        if o.application_id:
+            app_res = await db.execute(select(PreMarketApplication).where(PreMarketApplication.id == o.application_id))
+            app = app_res.scalar_one_or_none()
 
         if app:
             app_status_str = (app.status.value if hasattr(app.status, "value") else str(app.status)).lower()
-            if getattr(app, "sub_inspector_verified", False):
-                continue
             if app_status_str in [
-                "pending_inspector",
                 "pending_almo_sanction",
                 "pending_clmo_approval",
-                "pending_supervisor",
                 "approved_certified",
-                "almo_approved",
-                "approved",
             ]:
                 continue
 
@@ -621,6 +612,33 @@ async def forward_application_to_lead_inspector(
         case_obj = c_res.scalar_one_or_none()
         if case_obj and case_obj.application_id:
             app_res = await db.execute(select(PreMarketApplication).where(PreMarketApplication.id == case_obj.application_id))
+            app = app_res.scalar_one_or_none()
+
+    if not app:
+        # Check if application_id is a FieldVisitOrder id
+        from app.db.models.models import FieldVisitOrder
+        vo_res = await db.execute(select(FieldVisitOrder).where(FieldVisitOrder.id == application_id))
+        vo_obj = vo_res.scalar_one_or_none()
+        if vo_obj and vo_obj.application_id:
+            app_res = await db.execute(select(PreMarketApplication).where(PreMarketApplication.id == vo_obj.application_id))
+            app = app_res.scalar_one_or_none()
+
+    if not app:
+        # Check if application_id is a Scan id
+        from app.db.models.models import Scan
+        s_res = await db.execute(select(Scan).where(Scan.id == application_id))
+        s_obj = s_res.scalar_one_or_none()
+        if s_obj:
+            app_res = await db.execute(select(PreMarketApplication).where(PreMarketApplication.scan_id == s_obj.id))
+            app = app_res.scalar_one_or_none()
+
+    if not app:
+        # Check if application_id is a ProductAudit id
+        from app.db.models.models import ProductAudit
+        pa_res = await db.execute(select(ProductAudit).where(ProductAudit.id == application_id))
+        pa_obj = pa_res.scalar_one_or_none()
+        if pa_obj:
+            app_res = await db.execute(select(PreMarketApplication).where(PreMarketApplication.product_name == pa_obj.product_name))
             app = app_res.scalar_one_or_none()
 
     if not app:

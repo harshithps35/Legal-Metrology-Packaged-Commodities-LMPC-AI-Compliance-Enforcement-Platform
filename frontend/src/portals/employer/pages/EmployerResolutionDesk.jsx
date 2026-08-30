@@ -135,8 +135,7 @@ export default function EmployerResolutionDesk() {
     );
     setDeclaredMrp(c.declared_mrp || '');
     setDeclaredNetQty(c.declared_net_quantity || '');
-    setFile(null);
-    setPreview(null);
+    setProofFiles([]);
   };
 
   const handleFileChange = (e) => {

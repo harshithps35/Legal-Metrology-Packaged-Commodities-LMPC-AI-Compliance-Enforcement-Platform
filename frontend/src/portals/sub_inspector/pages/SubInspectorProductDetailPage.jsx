@@ -117,15 +117,8 @@ export default function SubInspectorProductDetailPage() {
   const handleIssueToLeadInspector = async () => {
     try {
       setSubmittingAction(true);
-      try {
-        await subInspectorAPI.forwardToLeadInspector(product.id);
-      } catch (subErr) {
-        await inspectorAPI.verifyPreMarket(product.id, {
-          decision: 'FORWARD_TO_ALMO',
-          inspector_notes: 'Physical on-site findings verified compliant by Sub-Inspector Sanjay Kumar. Forwarded to Lead Inspector.',
-        });
-      }
-      toast.success('Successfully issued to Lead Inspector for statutory review!');
+      const res = await subInspectorAPI.forwardToLeadInspector(product.id);
+      toast.success(res.data?.message || 'Successfully issued to Lead Inspector for statutory review!');
       navigate('/sub-inspector/visits');
     } catch (err) {
       console.error(err);

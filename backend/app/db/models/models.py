@@ -282,6 +282,10 @@ class PreMarketApplication(Base):
     clmo_waiver_justification = Column(Text, nullable=True)
     waiver_severity_checked = Column(Boolean, default=False, nullable=False)
 
+    # Sub-Inspector & ALMO Verification state
+    sub_inspector_verified = Column(Boolean, default=False, nullable=True)
+    almo_approved = Column(Boolean, default=False, nullable=True)
+
     # Assigned Hierarchy Officers
     assigned_almo_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     assigned_clmo_id = Column(Integer, ForeignKey("users.id"), nullable=True)
@@ -373,6 +377,7 @@ class FieldVisitOrder(Base):
     visit_submitted_at = Column(DateTime, nullable=True)
 
     # ALMO Report Verification & Loop Protection
+    sub_inspector_verified = Column(Boolean, default=False, nullable=True)
     almo_report_approved = Column(Boolean, default=False, nullable=False)
     almo_review_remarks = Column(Text, nullable=True)
     almo_reviewed_at = Column(DateTime, nullable=True)
