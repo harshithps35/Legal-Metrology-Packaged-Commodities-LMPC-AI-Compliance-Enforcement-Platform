@@ -85,17 +85,18 @@ flowchart TD
     DECISION -- "Physical Audit Mandated" --> D1
     DECISION -- "Statutory Compliant" --> E1
 
-    C4 -- "Deficiency Rectified & Endorsed" --> E1
-    D4 -- "VIR Co-Signed & Completed" --> E1
+    C4 -- "Deficiency Rectified & Endorsed by Sub-Inspector" --> E1
+    D4 -- "VIR Co-Signed & Completed by Sub-Inspector" --> E1
 
     %% 6. Directorate Tiered Adjudication Pipeline
     subgraph DIRECTORATE["4. 4-Tier Directorate Adjudication & Certification Pipeline"]
-        E1["Level 4: Lead Inspector (LMI) Review & Endorsement<br/>• Approved & Send to ALMO<br/>• Reject & Re-Submit Sub-Inspector for Clarification"]:::actionStyle
+        E1["Level 4: Lead Inspector (LMI) Triage Desk<br/>• Dispatch / Assign Field Visit to Squad<br/>• Endorse to ALMO for Certificate Sanction<br/>• Send to 15-Day Resolution Desk"]:::actionStyle
         E2["Level 3: ALMO Sanctions Authority Review & Endorsement"]:::actionStyle
         E3["Level 2: CLMO Adjudication Authority Verification<br/>(100% Rules Verified & Final Grant)"]:::actionStyle
         E4["Level 1: State Commissioner Apex Directorate<br/>(Statewide Oversight & Revocation Controls)"]:::actionStyle
         
-        E1 -->|Send to ALMO| E2 -->|Forward to CLMO| E3
+        E1 -->|Endorse to ALMO| E2 -->|Forward to CLMO| E3
+        E1 -.->|Assign Field Visit| D1
         E3 -.->|Apex Oversight| E4
     end
 
@@ -273,11 +274,13 @@ Each authority level is equipped with a **dedicated full-page portal and dossier
 1. **Level 1 — State Commissioner (`/commissioner`)**: Statewide compliance analytics, ruleset customization, and statutory certificate revocation controls.
 2. **Level 2 — CLMO (`/clmo`)**: Adjudication gate verifying 100% statutory rule satisfaction and granting official clearance certificates (`Issue Certificate`, `Reject`, `Re Clarification`).
 3. **Level 3 — ALMO (`/almo`)**: Sanctions authority dispatching field visit orders and endorsing inspection findings (`Sanction & Forward to CLMO`, `Reject`, `Re Clarification`).
-4. **Level 4 — Lead Inspector (`/inspector`)**: Field inspectorate review queue with 3 dedicated actions:
-   - **`Approved and Send to ALMO`**
-   - **`Reject`**
-   - **`Re-Submit Sub-Inspector for Clarification`**
-5. **Level 5 — Sub-Inspector Squad & Resolution Desk (`/sub-inspector`)**: Executes on-site factory visits, captures GPS-watermarked camera photos, logs digital Vernier caliper readings, and verifies 15-Day Resolution Desk submissions (`Issue to Lead Inspector`, `Reject`, `Re Clarification`).
+4. **Level 4 — Lead Inspector (`/inspector`)**: Pre-Market Verification & Severity Gate (`L4 TRIAGE DESK`) review queue with dedicated gateways:
+   - **`Dispatch / Assign Field Visit Order`** (Direct assignment to Sub-Inspector squad with facility name, suggested schedule, address, and statutory grounds)
+   - **`Endorse to ALMO`** (Forward endorsed compliant dossier to ALMO Level 3 for statutory report sanction)
+   - **`Send to Violations Desk (Require Docs)`** (Dispatches mandatory document demand notice with 15-day cure window)
+   - **`Route to 15-Day Statutory Resolution Desk`** (Dispatches formal deficiency memo to Brand Owner)
+   - **`Defect Notice / Revision Request`**
+5. **Level 5 — Sub-Inspector Squad & Resolution Desk (`/sub-inspector`)**: Executes on-site factory visits, captures GPS-watermarked camera photos, logs digital Vernier caliper readings, and verifies 15-Day Resolution Desk submissions (`Approve & Submit to Lead Inspector`, `Reject & Demand Clarification`, `Escalate to ALMO`).
 6. **Level 6 — Brand Owner / Employer (`/employer`)**: Multi-angle pre-press artwork workbench, live application status tracking, notice rectification desk, and certificate download vault.
 
 ---
@@ -290,9 +293,13 @@ stateDiagram-v2
     Deficiency_Flagged --> Open_15Day_Desk: Statutory Notice Generated
     Open_15Day_Desk --> Employer_Rectification: Brand Owner uploads revised artwork & NABL report
     Employer_Rectification --> SubInspector_Verification: Squad verifies corrective proofs
-    SubInspector_Verification --> Cleared_and_Forwarded: Compliant -> Forwarded to Lead Inspector
+    SubInspector_Verification --> LeadInspector_Triage: Sub-Inspector Approved -> Routed to Lead Inspector (L4 Desk)
+    LeadInspector_Triage --> FieldVisit_Assigned: Inspector Assigns / Dispatches Field Visit to Squad
+    LeadInspector_Triage --> ALMO_Endorsed: Inspector Endorses Compliant Dossier to ALMO (L3)
+    FieldVisit_Assigned --> SubInspector_OnSite: Sub-Inspector executes physical caliper audit & logs VIR
+    SubInspector_OnSite --> LeadInspector_Triage: VIR Co-Signed -> Returns to Lead Inspector
     SubInspector_Verification --> Expired_Compounding: SLA Breached -> Escalate for Compounding Notice
-    Cleared_and_Forwarded --> [*]
+    ALMO_Endorsed --> [*]
     Expired_Compounding --> [*]
 ```
 
