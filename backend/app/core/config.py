@@ -47,7 +47,21 @@ def normalize_image_url(image_path_or_url: Optional[str]) -> str:
     """Normalizes any image path or string to a valid Web URL starting with /uploads/."""
     if not image_path_or_url:
         return "/uploads/artwork_sample.png"
-    clean = str(image_path_or_url).replace("\\", "/").strip()
+    
+    raw = str(image_path_or_url).strip()
+    if raw.startswith("[") and raw.endswith("]"):
+        try:
+            import json
+            parsed = json.loads(raw)
+            if isinstance(parsed, list) and len(parsed) > 0:
+                raw = str(parsed[0]).strip()
+        except Exception:
+            import re
+            m = re.search(r'["\']([^"\']+\.(?:png|jpg|jpeg|webp|gif))["\']', raw, re.IGNORECASE)
+            if m:
+                raw = m.group(1)
+
+    clean = raw.replace("\\", "/").replace('"', '').replace("'", "").replace("[", "").replace("]", "").strip()
     if clean.startswith("http://") or clean.startswith("https://") or clean.startswith("blob:") or clean.startswith("data:"):
         return clean
     if clean.startswith("./"):

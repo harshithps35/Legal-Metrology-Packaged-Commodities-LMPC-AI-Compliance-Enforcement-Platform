@@ -37,7 +37,7 @@ import toast from 'react-hot-toast';
 
 export function getProductImageUrl(item) {
   if (!item) return '/uploads/artwork_sample.png';
-  const rawPath =
+  let rawPath =
     item.image_url ||
     item.artwork_file_path ||
     (item.scan && item.scan.image_url) ||
@@ -51,6 +51,25 @@ export function getProductImageUrl(item) {
     return '/uploads/artwork_sample.png';
   }
 
+  // Handle Array or JSON array string
+  if (Array.isArray(rawPath) && rawPath.length > 0) {
+    rawPath = rawPath[0];
+  } else if (typeof rawPath === 'string' && rawPath.trim().startsWith('[') && rawPath.trim().endsWith(']')) {
+    try {
+      const parsed = JSON.parse(rawPath);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        rawPath = parsed[0];
+      }
+    } catch (e) {
+      const match = rawPath.match(/["']([^"']+\.(?:png|jpg|jpeg|webp|gif))["']/i);
+      if (match) {
+        rawPath = match[1];
+      }
+    }
+  }
+
+  if (typeof rawPath !== 'string') return '/uploads/artwork_sample.png';
+
   if (
     rawPath.startsWith('http://') ||
     rawPath.startsWith('https://') ||
@@ -60,8 +79,8 @@ export function getProductImageUrl(item) {
     return rawPath;
   }
 
-  // Clean Windows backslashes
-  let clean = rawPath.replace(/\\/g, '/').trim();
+  // Clean Windows backslashes and brackets/quotes
+  let clean = rawPath.replace(/\\/g, '/').replace(/[\[\]"']/g, '').trim();
   if (clean.startsWith('./')) clean = clean.substring(2);
   if (!clean.startsWith('/')) clean = '/' + clean;
   if (!clean.startsWith('/uploads/')) {
