@@ -113,17 +113,17 @@ flowchart TD
 ---
 
 ## 📌 Table of Contents
-1. [Solution Overview & Flowchart Diagram](#-solution-overview--complete-end-to-end-flowchart)
-2. [Problem Statement & Regulatory Framework (LMPC 2011)](#-problem-statement--regulatory-framework-lmpc-2011)
+1. [Solution Overview & Flowchart Diagram](#-solution-overview-complete-end-to-end-flowchart)
+2. [Problem Statement & Regulatory Framework (LMPC 2011)](#-problem-statement-regulatory-framework-lmpc-2011)
 3. [Key Capabilities in the Prototype](#-key-capabilities-in-the-prototype)
-4. [Technical Approach & System Architecture](#-technical-approach--system-architecture)
-5. [Computer Vision, OCR & Font Measurement Engine](#-computer-vision-ocr--font-measurement-engine)
-6. [Statutory Rules Matrix & Gazette Legal Checks](#-statutory-rules-matrix--gazette-legal-checks)
-7. [6-Tier Role-Based Access Control (RBAC) & Portals](#-6-tier-role-based-access-control-rbac--portals)
-8. [Statutory Resolution Desk & 15-Day SLA Protocol](#-statutory-resolution-desk--15-day-sla-protocol)
-9. [Reporting, Document Vault & Certificate Verification](#-reporting-document-vault--certificate-verification)
+4. [Technical Approach & System Architecture](#-technical-approach-system-architecture)
+5. [Computer Vision, OCR & Font Measurement Engine](#-computer-vision-ocr-font-measurement-engine)
+6. [Statutory Rules Matrix & Gazette Legal Checks](#-statutory-rules-matrix-gazette-legal-checks)
+7. [6-Tier Role-Based Access Control (RBAC) & Portals](#-6-tier-role-based-access-control-rbac-portals)
+8. [Statutory Resolution Desk & 15-Day SLA Protocol](#-statutory-resolution-desk-15-day-sla-protocol)
+9. [Reporting, Document Vault & Certificate Verification](#-reporting-document-vault-certificate-verification)
 10. [REST API Directory](#-rest-api-directory)
-11. [Installation & Quick Start Guide](#-installation--quick-start-guide)
+11. [Installation & Quick Start Guide](#-installation-quick-start-guide)
 12. [Default Demonstration Accounts](#-default-demonstration-accounts)
 
 ---
