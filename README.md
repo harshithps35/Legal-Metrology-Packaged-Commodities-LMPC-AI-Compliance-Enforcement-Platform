@@ -213,13 +213,17 @@ flowchart LR
     G --> H[Compliance Verdict & Itemized Breakdown]
 ```
 
-### 1. Preprocessing Pipeline (`backend/app/pipeline/preprocessor.py`)
-- **CLAHE (Contrast Limited Adaptive Histogram Equalization)**: Removes packaging glare and normalizes metallic/glossy labels.
-- **Affine Deskewing**: Rotates angled handheld captures to true orthogonal perspective.
-- **Morphological Text Clustering**: Isolates legal declaration text blocks from brand illustrations.
+The prototype engine is architected around four core AI, computer vision, and statutory verification pillars:
 
-### 2. Schedule II Font Height Metric Engine (`backend/app/engine/font_measurer.py`)
-The system calculates Principal Display Panel (PDP) surface area and enforces statutory numeral heights:
+### 1. Optical Character Recognition (OCR) (`backend/app/pipeline/ocr_engine.py`, `preprocessor.py`)
+- **OpenCV Computer Vision Pipeline**: Applies **CLAHE** (Contrast Limited Adaptive Histogram Equalization) to neutralize packaging glare on metallic/glossy foil packets, affine de-skewing for handheld camera captures, and morphological binarization.
+- **Multi-Engine OCR Engine**: Uses **Tesseract OCR with HOCR/TSV coordinate extraction** alongside **EasyOCR** multi-pass text detection to accurately transcribe mandatory declarations (MRP, Net Quantity, Mfg/Exp Dates, FSSAI numbers, manufacturer postal addresses, and consumer helpline emails).
+
+### 2. Object Detection & Bounding Boxes (`backend/app/engine/font_measurer.py`, `backend/app/nlp/ner_extractor.py`)
+- **Bounding Box Localization**: Identifies precise pixel coordinates $(x, y, w, h)$ for individual text clusters and statutory labels across the Principal Display Panel (PDP).
+- **Schedule II Character Height Metric Conversion**: Converts detected bounding box pixel heights into physical millimeters based on image DPI calibration:
+  $$H_{\text{mm}} = \frac{\text{bbox\_height\_px}}{\text{DPI}} \times 25.4$$
+- **Dual-Pricing & Sticker Overprint Detection**: Identifies secondary price alteration stickers pasted over original factory MRPs to flag Rule 11(2)(c) and Section 36 tampering offenses.
 
 $$\text{PDP Area} = \text{Width (cm)} \times \text{Height (cm)}$$
 
@@ -230,6 +234,14 @@ $$\text{PDP Area} = \text{Width (cm)} \times \text{Height (cm)}$$
 | $100 < A \le 500$ | **$2.0\text{ mm}$** | **$4.0\text{ mm}$** |
 | $500 < A \le 2500$ | **$4.0\text{ mm}$** | **$6.0\text{ mm}$** |
 | $A > 2500$ | **$6.0\text{ mm}$** | **$6.0\text{ mm}$** |
+
+### 3. Barcode & QR Scanning Libraries (`backend/app/pipeline/barcode_detector.py`)
+- **1D & 2D Barcode Decoding**: Integrates `pyzbar` and OpenCV `QRCodeDetector` supporting **EAN-13**, **UPC-A**, **Code-128**, **DataMatrix**, and **QR Codes** for instantaneous GTIN product identification.
+- **Dynamic Certificate Verification**: Mobile camera scanner decodes issued Directorate clearance certificate QR codes pointing to live verification dossiers at `/verify/:cert_number`.
+
+### 4. Custom Statutory Rule Engine (`backend/app/engine/rule_engine.py`, `backend/app/rules/rules_lmpc.json`)
+- **Rule Verification Core**: Ingests extracted NLP entities and coordinates, testing them against codified Gazette legal checks under the **Legal Metrology (Packaged Commodities) Rules, 2011**.
+- **Automated Defect & Compounding Calculation**: Evaluates mandatory declarations (Rules 6(1)(a)-(h)), missing tax clauses, sub-threshold character heights (Schedule II), Section 36 tampering offenses, and Rule 27 registrations.
 
 ---
 
