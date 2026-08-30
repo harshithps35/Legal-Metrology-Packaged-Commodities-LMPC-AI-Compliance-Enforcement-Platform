@@ -68,6 +68,13 @@ class SubmitVisitReportRequest(BaseModel):
 
 # ---------- Helper to serialize visit order ----------
 
+def _find_order_conds(visit_id: str):
+    conds = [FieldVisitOrder.visit_id == visit_id, FieldVisitOrder.visit_order_no == visit_id]
+    if str(visit_id).isdigit():
+        conds.append(FieldVisitOrder.id == int(visit_id))
+    return or_(*conds)
+
+
 async def _serialize_visit_order(order: FieldVisitOrder, db: AsyncSession) -> dict:
     insp_res = await db.execute(select(User).where(User.id == order.assigned_inspector_id))
     insp = insp_res.scalar_one_or_none()

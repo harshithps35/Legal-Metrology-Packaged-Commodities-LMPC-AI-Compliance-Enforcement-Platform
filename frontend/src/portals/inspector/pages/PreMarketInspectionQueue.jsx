@@ -185,13 +185,8 @@ export default function PreMarketInspectionQueue() {
     e.preventDefault();
     if (!selectedApp) return;
 
-    if (hasMinorOnly) {
-      toast.error('Field visit cannot be recommended for Minor violations. Use Digital Correction Loop.');
-      return;
-    }
-
-    if (!visitForm.visit_trigger_reason || visitForm.visit_trigger_reason.trim().length < 15) {
-      toast.error('Statutory recommendation justification must be at least 15 characters.');
+    if (!visitForm.visit_trigger_reason || visitForm.visit_trigger_reason.trim().length < 5) {
+      toast.error('Statutory recommendation justification must be provided.');
       return;
     }
 
@@ -201,12 +196,16 @@ export default function PreMarketInspectionQueue() {
         decision: 'RECOMMEND_FIELD_VISIT',
         visit_recommended: true,
         visit_justification: visitForm.visit_trigger_reason,
+        visit_location_name: visitForm.visit_location_name,
+        visit_address: visitForm.visit_address,
+        scheduled_date: visitForm.scheduled_date,
+        scheduled_time: visitForm.scheduled_time,
         inspector_notes:
           inspectorNotes ||
-          `Field visit recommended for ${selectedApp.product_name}. Reason: ${visitForm.visit_trigger_reason}`,
+          `Field visit dispatched to Sub-Inspector squad for ${selectedApp.product_name}. Reason: ${visitForm.visit_trigger_reason}`,
       });
       toast.success(
-        res.data?.message || `Field visit recommendation submitted to ALMO for ${selectedApp.product_name}!`
+        res.data?.message || `Field visit order dispatched to Sub-Inspector squad for ${selectedApp.product_name}!`
       );
       setShowVisitModal(false);
       setSelectedApp(null);
@@ -335,7 +334,7 @@ export default function PreMarketInspectionQueue() {
 
   const isVisitActive = (q) => {
     const s = (q.status || '').toLowerCase();
-    if (isSubInspectorVerified(q)) return false;
+    if (isSubInspectorVerified(q) && s === 'pending_inspector') return false;
     const voStatus = (q.visit_order?.visit_status || '').toLowerCase();
     if (voStatus === 'completed') return false;
 
@@ -351,6 +350,7 @@ export default function PreMarketInspectionQueue() {
   };
 
   const isHistory = (q) => {
+    if (isSubInspectorVerified(q) && (q.status || '').toLowerCase() === 'pending_inspector') return false;
     const s = (q.status || '').toLowerCase();
     return s === 'approved_certified' || s === 'rejected_sanctioned' || s === 'rejected_revise';
   };
@@ -360,7 +360,8 @@ export default function PreMarketInspectionQueue() {
       q.sub_inspector_verified ||
       q.is_resolved_by_sub_inspector ||
       q.inspector_notes?.includes('APPROVED BY SUB-INSPECTOR') ||
-      q.supervisor_notes?.includes('RESOLVED BY SUB-INSPECTOR')
+      q.supervisor_notes?.includes('RESOLVED BY SUB-INSPECTOR') ||
+      q.supervisor_notes?.includes('VERIFIED & APPROVED BY SUB-INSPECTOR')
     );
   };
 
@@ -1043,6 +1044,27 @@ export default function PreMarketInspectionQueue() {
                 Inspector Statutory Actions & Gateways:
               </div>
 
+              {isSubInspectorVerified(selectedApp) && (
+                <div className="bg-emerald-50 border border-emerald-300 rounded-2xl p-4 space-y-2">
+                  <div className="flex items-center gap-2 text-emerald-950 font-black text-xs">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Sub-Inspector Endorsement & Rectification Review Complete</span>
+                    <span className="text-3xs font-mono font-bold bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full ml-auto">
+                      AWAITING L4 ACTION
+                    </span>
+                  </div>
+                  <p className="text-2xs text-emerald-900 leading-relaxed font-medium">
+                    {selectedApp.inspector_notes || selectedApp.supervisor_notes || 'All statutory label corrections and declarations endorsed by Sub-Inspector.'}
+                  </p>
+                  <div className="text-3xs text-emerald-800 font-bold flex items-center gap-2 pt-1 border-t border-emerald-200">
+                    <span>Action Choice:</span>
+                    <span className="text-amber-900 font-extrabold">• Assign / Dispatch Field Visit to Field Squad</span>
+                    <span>or</span>
+                    <span className="text-emerald-900 font-extrabold">• Endorse directly to ALMO for Final Certificate Sanction</span>
+                  </div>
+                </div>
+              )}
+
               {selectedApp.status === 'approved_certified' ? (
                 <div className="flex flex-wrap items-center justify-between gap-3 bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
                   <div className="flex items-center gap-2">
@@ -1081,11 +1103,9 @@ export default function PreMarketInspectionQueue() {
                 </div>
               ) : (() => {
                 const isAlreadySanctioned =
-                  selectedApp.status === 'visit_sanctioned' ||
-                  selectedApp.status === 'pending_field_inspection' ||
-                  selectedApp.status === 'field_visit_completed' ||
-                  selectedApp.status === 'pending_almo_sanction' ||
-                  Boolean(selectedApp.visit_order_no) ||
+                  !isSubInspectorVerified(selectedApp) &&
+                  (selectedApp.status === 'visit_sanctioned' ||
+                   selectedApp.status === 'pending_field_inspection') &&
                   Boolean(selectedApp.visit_order && selectedApp.visit_order.visit_status !== 'COMPLETED');
 
                 const isAlreadySentToDesk =

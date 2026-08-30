@@ -581,12 +581,23 @@ async def verify_pre_market_application(
             vo.assigned_sub_inspector_id = sub_user_id
             vo.visit_report_submitted = False
             vo.almo_report_approved = False
+            if getattr(payload, "visit_location_name", None):
+                vo.visit_location_name = payload.visit_location_name
+            if getattr(payload, "visit_address", None):
+                vo.visit_address = payload.visit_address
+            if getattr(payload, "scheduled_time", None):
+                vo.scheduled_time = payload.scheduled_time
+            if getattr(payload, "scheduled_date", None):
+                try:
+                    vo.scheduled_date = datetime.strptime(str(payload.scheduled_date), "%Y-%m-%d").date()
+                except Exception:
+                    vo.scheduled_date = datetime.now(timezone.utc).date()
             if justification:
                 vo.visit_trigger_reason = justification
 
         app.visit_order_id = vo.visit_id
         app.visit_order_no = vo.visit_order_no
-        msg = f"Re-field visit order dispatched back to Sub-Inspector squad for '{app.product_name}'."
+        msg = f"Field visit order successfully dispatched to Sub-Inspector squad for '{app.product_name}'."
     elif payload.decision in ["FORWARD_TO_ALMO", "FORWARD_ALMO", "RECOMMEND_ALMO", "RECOMMEND_APPROVAL", "APPROVE", "DIRECT_APPROVE", "APPROVE_VERIFIED", "APPROVED_AND_SENT_TO_ALMO"]:
         from app.db.models.models import FieldVisitOrder, User, UserRole
         import uuid
