@@ -1,6 +1,8 @@
 # 🇮🇳 Legal Metrology Packaged Commodities (LMPC) AI Compliance & Enforcement Platform
-
-> **An Enterprise-Grade, End-to-End Digital Governance and Computer Vision Solution for Automated Statutory Compliance Verification under the Legal Metrology (Packaged Commodities) Rules, 2011.**
+### 🏆 Smart India Hackathon (SIH 2026) • Problem Statement ID: 26034
+> **Theme:** Agriculture, FoodTech & Rural Development / Consumer Protection  
+> **Ministry / Department:** Department of Consumer Affairs (DoCA), Ministry of Consumer Affairs, Food and Public Distribution, Government of India  
+> **Title:** Software System to check compliance of Packaged Commodities under Legal Metrology (Packaged Commodities) Rules, 2011 by scanning products, images and labels.
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110.0-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-19.0.0-61DAFB.svg?style=flat&logo=react&logoColor=black)](https://react.dev/)
@@ -13,15 +15,17 @@
 
 ## 🌟 Solution Overview & Complete End-to-End Flowchart
 
-The **LMPC Compliance Platform** is an AI-powered, multi-tenant digital governance ecosystem that automates statutory label verification, eliminates human measurement subjectivity, detects fraudulent price alteration (Rule 11), and streamlines clearance across all Directorate tiers and brand owners.
+The **LMPC Compliance Platform** is an enterprise-grade, end-to-end digital governance and computer vision platform. It replaces slow, error-prone manual caliper inspections with **automated AI label verification**, **Rule 11 price tampering detection**, **Schedule II font height calculations**, a **15-Day Statutory Resolution Desk**, and a **4-tier Directorate Adjudication Pipeline**.
 
 ### 🖼️ Solution Architecture & Workflow Infographic Figure
 
 ![LMPC Compliance System Solution Architecture](docs/solution_architecture.jpg)
 
-*Figure 1: Complete end-to-end architecture and operational lifecycle of the Legal Metrology (LMPC) AI Compliance Platform spanning Multi-Angle Packaging Input, Computer Vision & Schedule II Measurement Engine, 15-Day Statutory Resolution Desk, 4-Tier Directorate Adjudication, and Digital Certificate Vault.*
+*Figure 1: High-level architectural flowchart of the Legal Metrology (LMPC) AI Compliance Platform illustrating the 5 sequential stages from multi-angle packaging ingestion, AI computer vision, 15-day resolution desk, 4-tier Directorate adjudication, to digital certificate issuance.*
 
-### 📊 Interactive Workflow Flowchart Diagram
+---
+
+### 📊 End-to-End System Workflow & Governance Lifecycle
 
 ```mermaid
 flowchart TD
@@ -36,16 +40,16 @@ flowchart TD
     %% 1. Ingestion Layer
     subgraph INGEST["1. Multi-Channel Input & Packaging Ingestion"]
         A1["Brand Owner: Pre-Press Artwork Upload<br/>(Front PDP, Back PDP, Side Panels)"]:::inputStyle
-        A2["Field Officer: On-Site Camera Capture<br/>(GPS Geo-Tagged & Watermarked)"]:::inputStyle
-        A3["Citizen / General User: Label Scanner<br/>(Direct Image / Mobile Camera)"]:::inputStyle
+        A2["Field Squad: On-Site Camera Capture<br/>(GPS Geo-Tagged & Watermarked)"]:::inputStyle
+        A3["Citizen / Consumer: Label Scanner<br/>(Mobile Camera / Retail Capture)"]:::inputStyle
     end
 
     %% 2. AI Processing Engine
     subgraph AI_PIPELINE["2. AI Vision & Statutory Rules Processing Engine"]
         B1["OpenCV Preprocessing & Adaptive CLAHE Binarization"]:::aiStyle
         B2["Tesseract HOCR Bounding Box & Text Extraction"]:::aiStyle
-        B3["spaCy NLP Named Entity Recognition & Gazette Regex"]:::aiStyle
-        B4["Schedule II PDP Surface Area & Numeral Height Metric Measurer"]:::aiStyle
+        B3["spaCy NLP Named Entity Recognition & Gazette Legal Matchers"]:::aiStyle
+        B4["Schedule II PDP Area & Numeral Height Metric Measurer"]:::aiStyle
         B5["Rule Evaluation Engine<br/>(Rules 6, 11, 27 & Schedule II)"]:::aiStyle
         
         B1 --> B2 --> B3 --> B5
@@ -110,71 +114,65 @@ flowchart TD
 
 ## 📌 Table of Contents
 1. [Solution Overview & Flowchart Diagram](#-solution-overview--complete-end-to-end-flowchart)
-2. [Executive Summary & Problem Statement](#-executive-summary--problem-statement)
-3. [Key Features & Capabilities](#-key-features--capabilities)
-4. [System Architecture](#-system-architecture)
-5. [Statutory Workflow & Governance Lifecycle](#-statutory-workflow--governance-lifecycle)
-6. [Computer Vision, OCR & Font Measurement Engine](#-computer-vision-ocr--font-measurement-engine)
-7. [Statutory Rules Matrix & Gazette Legal Checks](#-statutory-rules-matrix--gazette-legal-checks)
-8. [6-Tier Role-Based Access Control (RBAC)](#-6-tier-role-based-access-control-rbac)
-9. [Statutory Resolution Desk & 15-Day SLA Protocol](#-statutory-resolution-desk--15-day-sla-protocol)
-10. [Reporting, Document Vault & Certificate Verification](#-reporting-document-vault--certificate-verification)
-11. [REST API Directory](#-rest-api-directory)
-12. [Installation & Quick Start Guide](#-installation--quick-start-guide)
-13. [Default Demonstration Accounts](#-default-demonstration-accounts)
+2. [Problem Statement & Regulatory Framework (LMPC 2011)](#-problem-statement--regulatory-framework-lmpc-2011)
+3. [Key Capabilities in the Prototype](#-key-capabilities-in-the-prototype)
+4. [Technical Approach & System Architecture](#-technical-approach--system-architecture)
+5. [Computer Vision, OCR & Font Measurement Engine](#-computer-vision-ocr--font-measurement-engine)
+6. [Statutory Rules Matrix & Gazette Legal Checks](#-statutory-rules-matrix--gazette-legal-checks)
+7. [6-Tier Role-Based Access Control (RBAC) & Portals](#-6-tier-role-based-access-control-rbac--portals)
+8. [Statutory Resolution Desk & 15-Day SLA Protocol](#-statutory-resolution-desk--15-day-sla-protocol)
+9. [Reporting, Document Vault & Certificate Verification](#-reporting-document-vault--certificate-verification)
+10. [REST API Directory](#-rest-api-directory)
+11. [Installation & Quick Start Guide](#-installation--quick-start-guide)
+12. [Default Demonstration Accounts](#-default-demonstration-accounts)
 
 ---
 
-## 🏛️ Executive Summary & Problem Statement
+## 🏛️ Problem Statement & Regulatory Framework (LMPC 2011)
 
-In India, packaging and labeling of all pre-packaged commodities are strictly regulated under the **Legal Metrology Act, 2009** and the **Legal Metrology (Packaged Commodities) Rules, 2011 (LMPC)**. Non-compliance results in heavy compounding fees, product seizures, and criminal liability. 
+In India, packaging and labeling of all pre-packaged commodities are strictly governed under the **Legal Metrology Act, 2009** and the **Legal Metrology (Packaged Commodities) Rules, 2011 (LMPC)**. Non-compliance results in compounding fees, product seizures, and prosecution.
 
-### Key Challenges in Traditional Enforcement:
-- **Manual & Subjective Inspection**: Field inspectors physically measure numeral character heights using mechanical calipers, causing human error and inconsistent enforcement.
-- **Pre-Market Bottlenecks**: Brand owners wait weeks for manual pre-press artwork clearance before launching new packaging lines.
-- **Price Alteration & Smudging Fraud (Rule 11)**: Deceptive secondary stickers, overwritten MRPs, and omitted tax declarations routinely escape manual detection.
-- **Siloed Communication**: Lack of a centralized audit trail connecting the State Commissioner, District Officers (CLMO/ALMO), Field Inspectors, and Manufacturers.
-
-### The Core Solution:
-1. **Pre-Market Clearance Suite** for brand owners to upload pre-press die-lines and obtain instant AI compliance pre-audits.
-2. **Field Enforcement & Squad Dispatch Suite** with geo-stamped evidence capture, digital caliper logging, and SHA-256 signed visit reports.
-3. **Statutory 15-Day Deficiency Resolution Desk** providing companies a statutory cure window before punitive prosecution.
-4. **Tiered Directorate Clearance** enabling multi-level adjudication from Field Inspector up to the State Commissioner.
+### Key Pain Points in Traditional Enforcement:
+- **Subjective & Slow Caliper Measurements**: Field inspectors manually verify character heights using mechanical Vernier calipers on physical packaging, leading to measurement disputes and human error.
+- **Pre-Market Clearance Delays**: Brand owners face prolonged manual review cycles before commercial packaging rollouts.
+- **Deceptive Price Alterations (Rule 11)**: Secondary price stickers, smudged MRPs, and omitted tax declarations deceive consumers and evade retail surveillance.
+- **Disconnected Field Data**: Lack of real-time GPS evidence capture and absence of an auditable digital trail connecting Field Officers, Sanctions Officers, and the State Directorate.
 
 ---
 
-## 🚀 Key Features & Capabilities
+## 🚀 Key Capabilities in the Prototype
 
-- [x] **Multi-Angle Image Upload & High-Res Scanning**: Supports simultaneous upload and inspection of multi-panel packaging (Front Principal Display Panel, Back PDP, Side nutritional panels).
-- [x] **Automated Mandatory Declaration Extraction**: High-precision extraction of Commodity Name, Net Quantity, MRP, Manufacturing Date, Expiry Date, Consumer Care, and Manufacturer Address.
-- [x] **Schedule II Numeral Font Height & Readability Analysis**: Calculates Principal Display Panel (PDP) surface area in $cm^2$ and validates numeral heights against statutory minimum thresholds ($\ge 1.0\text{ mm}$ up to $\ge 6.0\text{ mm}$).
-- [x] **Rule 11 Price Smudging & Overwrite Detection**: Identifies dual stickers, altered prices, overwritten MRPs, and omitted *"Inclusive of all taxes"* clauses.
-- [x] **Rule 6(1)(h) Unit Sale Price (USP) Validation**: Automatically computes mathematical correctness of price per gram, milliliter, or number.
-- [x] **Rule 27 Manufacturer Undertaking Verification**: Cross-references corporate registration records and legal affidavits.
-- [x] **On-Site Squad Camera & Evidence Geo-Tagging**: Live camera viewfinder with GPS watermarking, timestamp stamping, and multi-photo factory floor evidence upload.
-- [x] **Digital Vernier Caliper Log**: Records physical tool calibration, model serial number, and physical measurements against AI estimates.
-- [x] **Dedicated Full-Page Portals & Dossiers**: Tailored full-page audit dossiers for each authority tier with specific statutory action sets.
-- [x] **Multi-Format Statutory Export**: 1-click export of Official Regulatory Clearance Certificates and Detailed Violation Inspection Reports (VIR) in **PDF**, **DOCX (Word)**, and **Excel (XLSX)**.
-- [x] **Public QR Code Certificate Verification**: Dedicated verification endpoint (`/verify/:cert_number`) with cryptographic SHA-256 seal validation.
+- [x] **Image Upload & Multi-Angle Product Scanning**: Batch upload of pre-press artwork die-lines (Front PDP, Back PDP, Side nutritional panels) and live camera photos.
+- [x] **Extraction of Mandatory Declarations (Rule 6)**: High-accuracy extraction of Commodity Name, Net Quantity, MRP, Manufacturing Date, Expiry Date, Consumer Care Contact, and Manufacturer Address.
+- [x] **Schedule II Font Size & Readability Analysis**: Calculates Principal Display Panel (PDP) surface area in $\text{cm}^2$ and validates numeral heights against statutory minimum thresholds ($1.0\text{ mm}$ to $6.0\text{ mm}$).
+- [x] **Detection of Missing, Misleading, or Altered Declarations**: Automatically identifies dual price stickers, overwritten digits, missing *"inclusive of all taxes"*, and non-standard metric units.
+- [x] **Rule 6(1)(h) Unit Sale Price (USP) Mathematical Check**: Enforces correct calculation of price per gram, milliliter, or number.
+- [x] **Generation of Compliance/Non-Compliance Reports (VIR)**: Itemized, rule-by-rule statutory inspection reports with legal section references.
+- [x] **Attachment of Photographs & Supporting Evidence**: Geo-tagged camera viewfinder with GPS watermarking, timestamping, Vernier caliper logs, and factory floor evidence galleries.
+- [x] **Repository of Scanned Products & Audit History**: Chronological timeline of all pre-market submissions, field visit orders, and resolution cases.
+- [x] **Role-Based User Access (RBAC)**: 6 dedicated portals for State Commissioner, CLMO, ALMO, Lead Inspector, Sub-Inspector Squad, and Employer/Brand Owner.
+- [x] **Enforcement & Monitoring Dashboards**: Real-time KPI tracking for active visits, overdue 15-day notices, and certified commodities.
+- [x] **Multi-Format Statutory Export**: 1-click export of Official Clearance Certificates and Inspection Reports to **PDF (with Vector Seal)**, **DOCX (Word)**, and **Excel (XLSX)**.
+- [x] **Public QR Code Authenticity Verification**: Dedicated verification endpoint (`/verify/:cert_number`) with cryptographic SHA-256 seal validation.
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Technical Approach & System Architecture
 
 ```mermaid
 graph TB
     subgraph Frontend["Frontend Layer (React 19 + Vite + TailwindCSS v4)"]
-        UI_E["Employer / Brand Owner Suite"]
-        UI_SI["Sub-Inspector Squad Portal"]
-        UI_LMI["Lead Inspector Workbench"]
-        UI_ALMO["ALMO Sanctions Authority"]
-        UI_CLMO["CLMO Adjudication Authority"]
-        UI_COMM["Commissioner Apex Directorate"]
-        UI_VERIFY["Public Certificate Verification"]
+        UI_E["Level 6: Employer / Brand Owner Suite"]
+        UI_SI["Level 5: Sub-Inspector Squad Portal"]
+        UI_LMI["Level 4: Lead Inspector Workbench"]
+        UI_ALMO["Level 3: ALMO Sanctions Authority"]
+        UI_CLMO["Level 2: CLMO Adjudication Authority"]
+        UI_COMM["Level 1: Commissioner Apex Directorate"]
+        UI_VERIFY["Public Certificate Verification Portal"]
     end
 
     subgraph Gateway["API & Security Gateway (FastAPI)"]
-        AUTH["JWT Authentication & RBAC Engine"]
+        AUTH["JWT Authentication & Scoped RBAC Engine"]
         ROUTERS["REST API Routers (/api/v1/*)"]
         VALIDATOR["Pydantic v2 Schema Validation"]
     end
@@ -201,40 +199,6 @@ graph TB
 
 ---
 
-## 🔄 Statutory Workflow & Governance Lifecycle
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Emp as Brand Owner (Employer)
-    actor SI as Sub-Inspector (Field Squad)
-    actor LMI as Lead Inspector (LMI)
-    actor ALMO as ALMO (Sanctions Authority)
-    actor CLMO as CLMO (Certification Authority)
-    actor Comm as State Commissioner
-
-    Emp->>LMI: 1. Submit Packaging Application & Multi-Angle Artwork
-    Note over LMI: AI Engine runs Rule 6 & Schedule II Pre-Audit
-    
-    alt Non-Compliant / Price Alteration Flagged
-        LMI->>Emp: 2a. Issue 15-Day Statutory Deficiency Directive (Resolution Desk)
-        Emp->>SI: 2b. Upload Corrective Die-Line & NABL Lab Report
-        SI->>LMI: 2c. Verify Rectified Proof & Endorse
-    else Physical Verification Triggered
-        LMI->>ALMO: 3a. Recommend Factory Floor Inspection
-        ALMO->>SI: 3b. Sanction Visit Order & Dispatch Squad
-        SI->>SI: 3c. On-Site Caliper Audit, GPS Camera & Multi-Photo Capture
-        SI->>LMI: 3d. Co-Sign & Issue Visit Inspection Report (VIR)
-    end
-
-    LMI->>ALMO: 4. Review Dossier -> Approved and Send to ALMO
-    ALMO->>CLMO: 5. Sanction & Forward to CLMO
-    CLMO->>Emp: 6. Adjudicate & Issue Official Clearance Certificate (PDF/DOCX/Excel)
-    Comm->>CLMO: 7. Apex Directorate Audit & Certificate Oversight
-```
-
----
-
 ## 🔍 Computer Vision, OCR & Font Measurement Engine
 
 ```mermaid
@@ -249,12 +213,12 @@ flowchart LR
 ```
 
 ### 1. Preprocessing Pipeline (`backend/app/pipeline/preprocessor.py`)
-- **CLAHE (Contrast Limited Adaptive Histogram Equalization)**: Normalizes dynamic packaging gloss and glare.
-- **Affine Deskewing**: Automatically rotates angled camera captures using minimum area rectangle detection.
-- **Morphological Text Segmentation**: Isolates declaration clusters from decorative brand artwork.
+- **CLAHE (Contrast Limited Adaptive Histogram Equalization)**: Removes packaging glare and normalizes metallic/glossy labels.
+- **Affine Deskewing**: Rotates angled handheld captures to true orthogonal perspective.
+- **Morphological Text Clustering**: Isolates legal declaration text blocks from brand illustrations.
 
 ### 2. Schedule II Font Height Metric Engine (`backend/app/engine/font_measurer.py`)
-The system calculates the **Principal Display Panel (PDP)** surface area and enforces statutory numeral heights:
+The system calculates Principal Display Panel (PDP) surface area and enforces statutory numeral heights:
 
 $$\text{PDP Area} = \text{Width (cm)} \times \text{Height (cm)}$$
 
@@ -286,7 +250,7 @@ $$\text{PDP Area} = \text{Width (cm)} \times \text{Height (cm)}$$
 
 ---
 
-## 👥 6-Tier Role-Based Access Control (RBAC)
+## 👥 6-Tier Role-Based Access Control (RBAC) & Portals
 
 ```mermaid
 graph TD
@@ -304,15 +268,17 @@ graph TD
     EMP -.->|Applies to| LMI
 ```
 
-1. **Level 1 — State Commissioner**: Statewide analytics, district enforcement metrics, ruleset customization, and statutory certificate revocation.
-2. **Level 2 — CLMO (Chief Legal Metrology Officer)**: Adjudication gate verifying 100% statutory compliance and issuing official sealed clearance certificates.
-3. **Level 3 — ALMO (Assistant Legal Metrology Officer)**: Sanctioning authority dispatching field visit orders and endorsing factory inspection reports.
-4. **Level 4 — Lead Inspector (LMI)**: Reviews pre-market applications, triggers physical visit recommendations, and endorses dossiers with:
-   - `Approved and Send to ALMO`
-   - `Reject`
-   - `Re-Submit Sub-Inspector for Clarification`
-5. **Level 5 — Sub-Inspector Squad**: Conducts physical factory visits, logs GPS-watermarked camera photos, records Vernier caliper measurements, and adjudicates the 15-Day Resolution Desk.
-6. **Level 6 — Employer / Brand Owner**: Pre-press die-line workbench, multi-panel upload, real-time application tracker, and certificate vault.
+Each authority level is equipped with a **dedicated full-page portal and dossier route**:
+
+1. **Level 1 — State Commissioner (`/commissioner`)**: Statewide compliance analytics, ruleset customization, and statutory certificate revocation controls.
+2. **Level 2 — CLMO (`/clmo`)**: Adjudication gate verifying 100% statutory rule satisfaction and granting official clearance certificates (`Issue Certificate`, `Reject`, `Re Clarification`).
+3. **Level 3 — ALMO (`/almo`)**: Sanctions authority dispatching field visit orders and endorsing inspection findings (`Sanction & Forward to CLMO`, `Reject`, `Re Clarification`).
+4. **Level 4 — Lead Inspector (`/inspector`)**: Field inspectorate review queue with 3 dedicated actions:
+   - **`Approved and Send to ALMO`**
+   - **`Reject`**
+   - **`Re-Submit Sub-Inspector for Clarification`**
+5. **Level 5 — Sub-Inspector Squad & Resolution Desk (`/sub-inspector`)**: Executes on-site factory visits, captures GPS-watermarked camera photos, logs digital Vernier caliper readings, and verifies 15-Day Resolution Desk submissions (`Issue to Lead Inspector`, `Reject`, `Re Clarification`).
+6. **Level 6 — Brand Owner / Employer (`/employer`)**: Multi-angle pre-press artwork workbench, live application status tracking, notice rectification desk, and certificate download vault.
 
 ---
 
@@ -334,7 +300,6 @@ stateDiagram-v2
 
 ## 📄 Reporting, Document Vault & Certificate Verification
 
-### Export Capabilities:
 - **Official Statutory Clearance Certificate (PDF)**: High-resolution vector seal, Directorate header, dynamic QR code, and unique certificate identification (`LMPC-2026-CERT-XXXXX`).
 - **Word Document Format (DOCX)**: Fully editable legal format for official Directorate record-keeping.
 - **Audit Spreadsheet (XLSX)**: Itemized violation and character measurement log for corporate quality control teams.
@@ -428,4 +393,4 @@ Web Application will be live at: `http://localhost:5173`
 
 ## 📄 License & Statutory Notice
 
-This prototype has been developed for the **Legal Metrology Department, Ministry of Consumer Affairs, Food and Public Distribution, Government of India**. All statutory rules and metrics are aligned with the Gazette of India notifications for the **Legal Metrology (Packaged Commodities) Rules, 2011**.
+This prototype has been developed for the **Legal Metrology Department, Ministry of Consumer Affairs, Food and Public Distribution, Government of India** under Smart India Hackathon (SIH 2026) Problem Statement 26034. All statutory rules and metrics are aligned with the Gazette of India notifications for the **Legal Metrology (Packaged Commodities) Rules, 2011**.
