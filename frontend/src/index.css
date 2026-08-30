@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Extej Theme Colors */
+  --color-brand-blue: #3B82F6;
+  --color-brand-blue-dark: #1D4ED8;
+  --color-brand-blue-light: #EFF6FF;
+  --color-brand-emerald: #10B981;
+  --color-brand-emerald-dark: #047857;
+  --color-brand-emerald-light: #ECFDF5;
+
+  --color-surface-canvas: #EEF2F8;
+  --color-surface-card: #FFFFFF;
+  --color-surface-muted: #F8FAFC;
+  --color-surface-border: #E2E8F0;
+
+  --color-text-main: #0F172A;
+  --color-text-sub: #64748B;
+  --color-text-muted: #94A3B8;
+
+  --radius-dashboard: 24px;
+  --radius-card: 18px;
+  --radius-pill: 9999px;
+
+  --shadow-dashboard: 0 20px 40px -15px rgba(59, 130, 246, 0.08), 0 0 1px 1px rgba(226, 232, 240, 0.6);
+  --shadow-card-elevated: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+  --shadow-pill-active: 0 4px 14px 0 rgba(59, 130, 246, 0.35);
+  --shadow-emerald-pill: 0 4px 14px 0 rgba(16, 185, 129, 0.35);
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: #EAF0F8;
+    background-image: 
+      radial-gradient(at 10% 10%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+      radial-gradient(at 90% 90%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, rgba(241, 245, 249, 0.6) 0px, transparent 70%);
+    background-attachment: fixed;
+    color: #0F172A;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+  }
+}
+
+/* Custom UI Utility Components matching Extej Template */
+.extej-card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1px solid #EEF2F6;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+}
+
+.extej-pill-active {
+  background: #3B82F6;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+}
+
+.extej-pill-subtab-active {
+  background: #3B82F6;
+  color: #FFFFFF;
+  font-weight: 700;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.extej-metric-badge {
+  color: #10B981;
+  font-weight: 800;
+}

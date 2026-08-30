@@ -1,0 +1,544 @@
+{
+  "meta": {
+    "title": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "version": "2.0",
+    "last_updated": "2026-08-26",
+    "source_documents": [
+      "Legal Metrology (Packaged Commodities) Rules, 2011 — Gazette of India",
+      "Legal Metrology (Packaged Commodities) (Amendment) Rules, 2017",
+      "Legal Metrology (Packaged Commodities) (Second Amendment) Rules, 2021",
+      "Legal Metrology (Packaged Commodities) (Amendment) Rules, 2022"
+    ],
+    "notes": "This file is the single source of truth for the LMPC compliance rule engine. All regex patterns, unit constraints, mandatory flags, font-size thresholds, and severity gradings are defined here. The application code reads this file at startup — do NOT hardcode rules elsewhere."
+  },
+
+  "mandatory_fields": [
+    {
+      "field_id": "commodity_name",
+      "display_name": "Name of Commodity",
+      "description": "Generic or common name of the commodity contained in the package",
+      "rule_reference": "Rule 6(1)(a)",
+      "mandatory": true,
+      "conditional": false,
+      "detection_strategy": "nlp_ner",
+      "regex_patterns": [],
+      "nlp_hints": ["product name", "commodity", "contents"],
+      "format_rules": {
+        "must_be_generic": true,
+        "note": "Must use the generic/common name, not just the brand name"
+      },
+      "severity_if_missing": "CRITICAL",
+      "severity_if_malformed": "MAJOR"
+    },
+    {
+      "field_id": "net_quantity",
+      "display_name": "Net Quantity",
+      "description": "Net quantity by weight, measure, or number of commodity",
+      "rule_reference": "Rule 6(1)(b)",
+      "mandatory": true,
+      "conditional": false,
+      "detection_strategy": "regex",
+      "regex_patterns": [
+        {
+          "pattern": "(?i)(?:Net\\s*(?:Qty|Quantity|Weight|Wt\\.?|Vol|Volume|Content|Contents))[\\s.:=-]*(?:(?:approx\\.?|approximately)\\s*)?([\\d]+(?:[.,]\\d+)?)\\s*(kg|g|gm|gms|grams|gram|l|ltr|ltrs|litre|litres|liter|liters|ml|mL|m|cm|mm|units?|nos?\\.?|pcs?\\.?|pieces?|count|N|tablets?|capsules?|sachets?|sheets?|rolls?|pairs?|wipes?)",
+          "description": "Matches net quantity declarations with standard metric units",
+          "capture_groups": {
+            "1": "numeric_value",
+            "2": "unit"
+          }
+        },
+        {
+          "pattern": "(?i)([\\d]+(?:[.,]\\d+)?)\\s*(kg|g|gm|gms|ml|mL|l|ltr|ltrs)\\s*(?:(?:±|\\+\\/?-?)\\s*\\d+(?:\\.\\d+)?\\s*(?:%|g|ml))?",
+          "description": "Fallback: bare numeric value followed by metric unit (no keyword prefix)",
+          "capture_groups": {
+            "1": "numeric_value",
+            "2": "unit"
+          }
+        }
+      ],
+      "format_rules": {
+        "must_use_standard_units": true,
+        "standard_weight_units": ["g", "gm", "gms", "gram", "grams", "kg"],
+        "standard_volume_units": ["ml", "mL", "l", "ltr", "ltrs", "litre", "litres", "liter", "liters"],
+        "standard_length_units": ["m", "cm", "mm"],
+        "standard_count_units": ["units", "nos", "pcs", "pieces", "count", "N"],
+        "prohibited_units": ["oz", "ounce", "ounces", "lb", "lbs", "pound", "pounds", "fl oz", "gallon", "gallons", "quart", "pint"],
+        "note": "Imperial units (oz, lb, etc.) are not permitted as the sole declaration; must be accompanied by SI/metric equivalent"
+      },
+      "unit_normalization": {
+        "g": "g", "gm": "g", "gms": "g", "gram": "g", "grams": "g",
+        "kg": "kg",
+        "ml": "ml", "mL": "ml",
+        "l": "l", "ltr": "l", "ltrs": "l", "litre": "l", "litres": "l", "liter": "l", "liters": "l",
+        "m": "m", "cm": "cm", "mm": "mm",
+        "units": "units", "nos": "units", "pcs": "units", "pieces": "units", "count": "units", "N": "units"
+      },
+      "severity_if_missing": "CRITICAL",
+      "severity_if_malformed": "MAJOR"
+    },
+    {
+      "field_id": "mrp",
+      "display_name": "Maximum Retail Price (MRP)",
+      "description": "Maximum retail price inclusive of all taxes",
+      "rule_reference": "Rule 6(1)(c)",
+      "mandatory": true,
+      "conditional": false,
+      "detection_strategy": "regex",
+      "regex_patterns": [
+        {
+          "pattern": "(?i)(?:MRP|M\\.?\\s*R\\.?\\s*P\\.?|Maximum\\s*Retail\\s*Price)[\\s.:=-]*(?:(?:Rs\\.?|₹|INR)\\s*)?([\\d,]+(?:\\.\\d{1,2})?)",
+          "description": "Primary: MRP keyword followed by currency symbol and amount",
+          "capture_groups": {
+            "1": "price_value"
+          }
+        },
+        {
+          "pattern": "(?:₹|Rs\\.?)\\s*([\\d,]+(?:\\.\\d{1,2})?)\\s*(?:/\\-|\\/-)?",
+          "description": "Fallback: currency symbol followed by amount without MRP keyword",
+          "capture_groups": {
+            "1": "price_value"
+          }
+        }
+      ],
+      "format_rules": {
+        "must_include_tax_declaration": true,
+        "tax_declaration_patterns": [
+          "(?i)(?:incl(?:usive|\\.)?\\s*(?:of\\s*)?all\\s*taxes)",
+          "(?i)(?:inclusive\\s*of\\s*all\\s*taxes)",
+          "(?i)(?:incl\\.?\\s*(?:of\\s+)?all\\s+taxes)",
+          "(?i)(?:including\\s*all\\s*taxes)",
+          "(?i)(?:all\\s*taxes\\s*incl(?:uded|\\.)?)"
+        ],
+        "currency_must_be_inr": true,
+        "valid_currency_symbols": ["₹", "Rs", "Rs.", "INR"],
+        "note": "MRP must be the maximum price inclusive of all taxes. The phrase 'inclusive of all taxes' or equivalent MUST appear on the label."
+      },
+      "severity_if_missing": "CRITICAL",
+      "severity_if_malformed": "MAJOR"
+    },
+    {
+      "field_id": "tax_declaration",
+      "display_name": "Tax Inclusivity Declaration",
+      "description": "Statement that MRP is inclusive of all taxes",
+      "rule_reference": "Rule 6(1)(c) proviso",
+      "mandatory": true,
+      "conditional": false,
+      "detection_strategy": "regex",
+      "regex_patterns": [
+        {
+          "pattern": "(?i)(?:incl(?:usive|\\.)?\\s*(?:of\\s*)?all\\s*taxes)",
+          "description": "Matches 'inclusive of all taxes' and common abbreviations"
+        },
+        {
+          "pattern": "(?i)(?:all\\s*taxes\\s*incl(?:uded|\\.)?)",
+          "description": "Matches reversed order 'all taxes included'"
+        },
+        {
+          "pattern": "(?i)(?:MRP.*incl.*tax|incl.*tax.*MRP)",
+          "description": "Broad catch for tax inclusivity near MRP mention"
+        }
+      ],
+      "format_rules": {
+        "note": "Must appear in proximity to MRP declaration. Spatial proximity check recommended."
+      },
+      "severity_if_missing": "MAJOR",
+      "severity_if_malformed": "MINOR"
+    },
+    {
+      "field_id": "manufacturer_info",
+      "display_name": "Manufacturer / Packer / Importer Details",
+      "description": "Name and complete address of the manufacturer, packer, or importer",
+      "rule_reference": "Rule 6(1)(d)",
+      "mandatory": true,
+      "conditional": false,
+      "detection_strategy": "nlp_ner",
+      "regex_patterns": [
+        {
+          "pattern": "(?i)(?:Mfg\\.?\\s*(?:by|at)?|Manufactured\\s*(?:by|at)|Packed\\s*(?:by|at)|Packer|Marketed\\s*(?:by|at)|Imported\\s*(?:by|at)|Importer)[\\s.:=-]+(.+)",
+          "description": "Matches manufacturer/packer/importer label keywords followed by entity info"
+        }
+      ],
+      "nlp_hints": ["ORG", "GPE", "LOC", "address", "manufacturer", "packer", "importer"],
+      "format_rules": {
+        "must_include_name": true,
+        "must_include_address": true,
+        "note": "Must contain both the entity name and full postal address"
+      },
+      "severity_if_missing": "CRITICAL",
+      "severity_if_malformed": "MAJOR"
+    },
+    {
+      "field_id": "date_manufacture",
+      "display_name": "Date of Manufacture / Packaging / Import",
+      "description": "Month and year of manufacture, packing, or import",
+      "rule_reference": "Rule 6(1)(e)",
+      "mandatory": true,
+      "conditional": false,
+      "detection_strategy": "regex",
+      "regex_patterns": [
+        {
+          "pattern": "(?i)(?:MFG|MFD|Mfg\\.?\\s*(?:Date|Dt\\.?)?|Manufactured|PKD|Pkg\\.?\\s*(?:Date|Dt\\.?)?|Packed|Date\\s*of\\s*(?:Mfg|Manufacture|Manufacturing|Packing|Pkg|Package|Packaging|Import))[\\s.:=-]*([0-3]?\\d[\\/-][0-1]?\\d[\\/-](?:20)?\\d{2}|[0-1]?\\d[\\/-](?:20)?\\d{2}|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[\\s.,\\/-]+(?:20)?\\d{2})",
+          "description": "Matches manufacturing/packing date in various formats",
+          "capture_groups": {
+            "1": "date_value"
+          }
+        }
+      ],
+      "format_rules": {
+        "accepted_formats": [
+          "MM/YYYY",
+          "MM-YYYY",
+          "Month YYYY",
+          "Mon YYYY",
+          "DD/MM/YYYY",
+          "DD-MM-YYYY",
+          "YYYY-MM-DD"
+        ],
+        "minimum_precision": "month_year",
+        "note": "At minimum, month and year must be declared"
+      },
+      "severity_if_missing": "CRITICAL",
+      "severity_if_malformed": "MAJOR"
+    },
+    {
+      "field_id": "date_expiry",
+      "display_name": "Best Before / Use By / Expiry Date",
+      "description": "Best before date, use by date, or expiry date",
+      "rule_reference": "Rule 6(1)(f)",
+      "mandatory": true,
+      "conditional": true,
+      "conditional_logic": {
+        "applies_when": "commodity is food, drug, cosmetic, or any perishable item",
+        "commodity_categories": ["food", "beverage", "dairy", "cosmetics", "pharmaceuticals", "personal_care", "perishable"],
+        "note": "Mandatory for perishable/consumable goods. For non-perishable goods (electronics, hardware, etc.), this field is not required."
+      },
+      "detection_strategy": "regex",
+      "regex_patterns": [
+        {
+          "pattern": "(?i)(?:EXP|Expiry|Exp\\.?\\s*(?:Date|Dt\\.?)?|Best\\s*Before|Best\\s*By|Use\\s*(?:Before|By)|BB|B\\.?B\\.?)[\\s.:=-]*([0-3]?\\d[\\/-][0-1]?\\d[\\/-](?:20)?\\d{2}|[0-1]?\\d[\\/-](?:20)?\\d{2}|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[\\s.,\\/-]+(?:20)?\\d{2})",
+          "description": "Matches expiry/best-before date declarations",
+          "capture_groups": {
+            "1": "date_value"
+          }
+        }
+      ],
+      "format_rules": {
+        "accepted_formats": [
+          "MM/YYYY",
+          "MM-YYYY",
+          "Month YYYY",
+          "Mon YYYY",
+          "DD/MM/YYYY",
+          "DD-MM-YYYY"
+        ],
+        "must_be_future_date": true,
+        "note": "If date is in the past, flag as CRITICAL violation (expired product)"
+      },
+      "severity_if_missing": "CRITICAL",
+      "severity_if_malformed": "MAJOR"
+    },
+    {
+      "field_id": "consumer_care",
+      "display_name": "Consumer Care Details",
+      "description": "Name, address, telephone number, and email of the person designated for consumer complaints",
+      "rule_reference": "Rule 6(1)(g)",
+      "mandatory": true,
+      "conditional": false,
+      "detection_strategy": "nlp_ner",
+      "regex_patterns": [
+        {
+          "pattern": "(?i)(?:Consumer\\s*(?:Care|Helpline|Complaint|Grievance|Service)|Customer\\s*(?:Care|Service|Support|Helpline)|Toll\\s*Free|Helpline|Feedback|Grievance|Contact\\s*(?:Us|Details?))[\\s.:=-]*",
+          "description": "Matches consumer care section header keywords"
+        },
+        {
+          "pattern": "(?i)(?:(?:Tel|Ph|Phone|Mob|Mobile|Toll\\s*Free)[\\s.:=-]*(?:\\+91[\\s-]?)?[\\d\\s\\-()]{7,15})",
+          "description": "Matches Indian phone number formats"
+        },
+        {
+          "pattern": "[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}",
+          "description": "Matches email addresses"
+        }
+      ],
+      "nlp_hints": ["phone", "email", "toll free", "helpline", "customer care"],
+      "format_rules": {
+        "should_include_phone": true,
+        "should_include_email": true,
+        "should_include_address": true,
+        "note": "Must include at least a telephone number and/or email address for consumer complaints"
+      },
+      "severity_if_missing": "CRITICAL",
+      "severity_if_malformed": "MAJOR"
+    },
+    {
+      "field_id": "country_of_origin",
+      "display_name": "Country of Origin",
+      "description": "Country where the commodity was manufactured or produced",
+      "rule_reference": "Rule 6(1)(h) — as amended 2021",
+      "mandatory": true,
+      "conditional": true,
+      "conditional_logic": {
+        "applies_when": "commodity is imported",
+        "detection_hint": "If 'Imported by' or 'Importer' keywords are found, this field becomes mandatory",
+        "note": "Mandatory for all imported goods per the 2021 amendment. For domestically manufactured goods, this field is not strictly required but its presence is not penalized."
+      },
+      "detection_strategy": "regex",
+      "regex_patterns": [
+        {
+          "pattern": "(?i)(?:Country\\s*of\\s*Origin|Made\\s*in|Product\\s*of|Produced\\s*in|Origin)[\\s.:=-]*([A-Za-z\\s]+)",
+          "description": "Matches country of origin declarations",
+          "capture_groups": {
+            "1": "country_name"
+          }
+        }
+      ],
+      "format_rules": {
+        "must_be_valid_country": true,
+        "note": "Must name a recognized country"
+      },
+      "severity_if_missing": "MAJOR",
+      "severity_if_malformed": "MINOR"
+    },
+    {
+      "field_id": "unit_sale_price",
+      "display_name": "Unit Sale Price (USP)",
+      "description": "Price per standard unit of weight, measure, or number",
+      "rule_reference": "Rule 6(2)",
+      "mandatory": true,
+      "conditional": true,
+      "conditional_logic": {
+        "applies_when": "commodity is sold by weight, measure, or number and net quantity exceeds threshold",
+        "note": "Required for commodities sold by weight/volume/length/number. Exempted for very small packages."
+      },
+      "detection_strategy": "regex",
+      "regex_patterns": [
+        {
+          "pattern": "(?i)(?:USP|Unit\\s*(?:Sale\\s*)?Price|Price\\s*per\\s*(?:unit|kg|g|l|ml|m|piece))[\\s.:=-]*(?:₹|Rs\\.?|INR)?\\s*([\\d,]+(?:\\.\\d{1,2})?)\\s*(?:/|per)\\s*(kg|g|l|ml|m|unit|piece|100\\s*g|100\\s*ml)",
+          "description": "Matches unit sale price declarations",
+          "capture_groups": {
+            "1": "price_value",
+            "2": "per_unit"
+          }
+        }
+      ],
+      "format_rules": {
+        "note": "Should express price per standard unit (per kg, per litre, per metre, per unit/number)"
+      },
+      "severity_if_missing": "MAJOR",
+      "severity_if_malformed": "MINOR"
+    },
+    {
+      "field_id": "batch_lot_number",
+      "display_name": "Batch / Lot Number",
+      "description": "Batch number or lot number or code number for traceability",
+      "rule_reference": "Rule 6(1)(e) read with FSSAI",
+      "mandatory": false,
+      "conditional": true,
+      "conditional_logic": {
+        "applies_when": "commodity is food or pharmaceutical",
+        "note": "Required under FSSAI for food products. Not strictly LMPC but commonly checked together."
+      },
+      "detection_strategy": "regex",
+      "regex_patterns": [
+        {
+          "pattern": "(?i)(?:Batch|Lot|B\\.?\\s*No\\.?|L\\.?\\s*No\\.?|Code\\s*No\\.?|Batch\\s*(?:No\\.?|Number|#))[\\s.:=-]*([A-Za-z0-9\\-/]+)",
+          "description": "Matches batch/lot number declarations",
+          "capture_groups": {
+            "1": "batch_value"
+          }
+        }
+      ],
+      "severity_if_missing": "MINOR",
+      "severity_if_malformed": "MINOR"
+    },
+    {
+      "field_id": "fssai_license",
+      "display_name": "FSSAI License Number",
+      "description": "Food Safety and Standards Authority of India license number",
+      "rule_reference": "FSSAI Act 2006 (cross-reference)",
+      "mandatory": false,
+      "conditional": true,
+      "conditional_logic": {
+        "applies_when": "commodity is food or beverage",
+        "note": "Not an LMPC field but commonly expected on food labels and cross-checked during inspections"
+      },
+      "detection_strategy": "regex",
+      "regex_patterns": [
+        {
+          "pattern": "(?i)(?:FSSAI|Lic\\.?\\s*(?:No\\.?|Number)|License\\s*No\\.?|FSSAI\\s*(?:Lic\\.?)?\\s*(?:No\\.?)?)[\\s.:=-]*([0-9]{10,14})",
+          "description": "Matches FSSAI license number (10-14 digit number)",
+          "capture_groups": {
+            "1": "license_number"
+          }
+        }
+      ],
+      "format_rules": {
+        "digit_count_range": [10, 14],
+        "note": "FSSAI license numbers are typically 14 digits"
+      },
+      "severity_if_missing": "MINOR",
+      "severity_if_malformed": "MINOR"
+    }
+  ],
+
+  "font_size_rules": {
+    "rule_reference": "Rule 9 read with Schedule II",
+    "description": "Minimum height of numerals and letters for mandatory declarations, based on the net quantity of the package",
+    "measurement_unit": "mm",
+    "thresholds": [
+      {
+        "net_quantity_min": 0,
+        "net_quantity_max": 50,
+        "net_quantity_unit": "g_or_ml",
+        "min_font_height_blown_moulded_perforated": 1.0,
+        "min_font_height_printed": 1.5,
+        "note": "For packages ≤ 50g or ≤ 50ml"
+      },
+      {
+        "net_quantity_min": 50,
+        "net_quantity_max": 200,
+        "net_quantity_unit": "g_or_ml",
+        "min_font_height_blown_moulded_perforated": 2.0,
+        "min_font_height_printed": 2.0,
+        "note": "For packages > 50g/ml and ≤ 200g/ml"
+      },
+      {
+        "net_quantity_min": 200,
+        "net_quantity_max": 1000,
+        "net_quantity_unit": "g_or_ml",
+        "min_font_height_blown_moulded_perforated": 4.0,
+        "min_font_height_printed": 4.0,
+        "note": "For packages > 200g/ml and ≤ 1kg/1L"
+      },
+      {
+        "net_quantity_min": 1000,
+        "net_quantity_max": null,
+        "net_quantity_unit": "g_or_ml",
+        "min_font_height_blown_moulded_perforated": 6.0,
+        "min_font_height_printed": 6.0,
+        "note": "For packages > 1kg/1L"
+      }
+    ],
+    "tolerance_band_percent": 10,
+    "tolerance_note": "Measurements within ±10% of the minimum are flagged as 'borderline' rather than outright fail, to account for Tier 1 estimation error",
+    "applies_to_fields": ["net_quantity", "mrp", "date_manufacture", "date_expiry", "manufacturer_info", "commodity_name"]
+  },
+
+  "dual_pricing_rules": {
+    "rule_reference": "Rule 6(3)",
+    "description": "No package shall declare two different MRPs for the same product (dual pricing prohibition)",
+    "detection_strategy": "If more than one distinct MRP value is extracted from the same label, flag as violation",
+    "severity": "CRITICAL"
+  },
+
+  "metric_unit_rules": {
+    "rule_reference": "Rule 5 read with Legal Metrology Act 2009",
+    "description": "All quantity declarations must use standard metric/SI units",
+    "prohibited_units": ["oz", "ounce", "ounces", "lb", "lbs", "pound", "pounds", "fl oz", "fluid ounce", "gallon", "gallons", "quart", "quarts", "pint", "pints", "inch", "inches", "feet", "foot", "yard", "yards"],
+    "note": "Imperial/US customary units are prohibited as the sole declaration. They may appear alongside metric units but cannot be the primary/only quantity.",
+    "severity_if_violated": "MAJOR"
+  },
+
+  "commodity_categories": {
+    "description": "Category classification to determine conditional field applicability",
+    "categories": [
+      {
+        "id": "food",
+        "display_name": "Food & Beverages",
+        "examples": ["biscuits", "chips", "juice", "water", "milk", "rice", "flour", "spices", "oil", "snacks", "chocolate", "tea", "coffee"],
+        "requires_expiry": true,
+        "requires_fssai": true,
+        "requires_batch": true
+      },
+      {
+        "id": "cosmetics",
+        "display_name": "Cosmetics & Personal Care",
+        "examples": ["soap", "shampoo", "cream", "lotion", "perfume", "deodorant", "toothpaste", "face wash"],
+        "requires_expiry": true,
+        "requires_fssai": false,
+        "requires_batch": true
+      },
+      {
+        "id": "pharmaceuticals",
+        "display_name": "Pharmaceuticals & Health",
+        "examples": ["tablets", "capsules", "syrup", "ointment", "drops", "supplements", "vitamins"],
+        "requires_expiry": true,
+        "requires_fssai": false,
+        "requires_batch": true
+      },
+      {
+        "id": "household",
+        "display_name": "Household & Cleaning",
+        "examples": ["detergent", "cleaner", "freshener", "insecticide", "wipes", "tissue"],
+        "requires_expiry": false,
+        "requires_fssai": false,
+        "requires_batch": false
+      },
+      {
+        "id": "electronics",
+        "display_name": "Electronics & Electrical",
+        "examples": ["bulbs", "batteries", "cables", "chargers", "earphones"],
+        "requires_expiry": false,
+        "requires_fssai": false,
+        "requires_batch": false
+      },
+      {
+        "id": "stationery",
+        "display_name": "Stationery & Office",
+        "examples": ["pens", "notebooks", "erasers", "adhesives", "markers"],
+        "requires_expiry": false,
+        "requires_fssai": false,
+        "requires_batch": false
+      },
+      {
+        "id": "general",
+        "display_name": "General / Unclassified",
+        "examples": [],
+        "requires_expiry": false,
+        "requires_fssai": false,
+        "requires_batch": false
+      }
+    ]
+  },
+
+  "severity_definitions": {
+    "CRITICAL": {
+      "level": 3,
+      "display_name": "Critical",
+      "description": "Major statutory violation — missing core mandatory declarations or expired product. Likely grounds for enforcement action.",
+      "color": "#DC2626",
+      "icon": "alert-triangle"
+    },
+    "MAJOR": {
+      "level": 2,
+      "display_name": "Major",
+      "description": "Significant non-compliance — formatting violation, font size below minimum, or missing secondary mandatory field.",
+      "color": "#F59E0B",
+      "icon": "alert-circle"
+    },
+    "MINOR": {
+      "level": 1,
+      "display_name": "Minor",
+      "description": "Advisory finding — missing optional/conditional field or minor formatting irregularity. Not typically grounds for prosecution.",
+      "color": "#3B82F6",
+      "icon": "info"
+    }
+  },
+
+  "verdict_logic": {
+    "COMPLIANT": {
+      "condition": "Zero CRITICAL violations AND zero MAJOR violations",
+      "display_name": "Compliant",
+      "color": "#16A34A"
+    },
+    "NON_COMPLIANT": {
+      "condition": "One or more CRITICAL violations",
+      "display_name": "Non-Compliant",
+      "color": "#DC2626"
+    },
+    "REQUIRES_MANUAL_REVIEW": {
+      "condition": "Zero CRITICAL violations but one or more MAJOR violations, OR any field has confidence < 0.6",
+      "display_name": "Requires Manual Review",
+      "color": "#F59E0B"
+    }
+  }
+}

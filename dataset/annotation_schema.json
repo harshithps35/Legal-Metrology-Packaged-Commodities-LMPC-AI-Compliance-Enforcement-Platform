@@ -1,0 +1,231 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LMPC Dataset Annotation",
+  "description": "Ground truth annotation schema for a single product label image in the LMPC compliance test dataset. Each image in dataset/images/ should have a corresponding JSON file in dataset/annotations/ with the same base name.",
+  "type": "object",
+  "required": ["image_filename", "annotator", "annotation_date", "product_info", "ground_truth_fields", "ground_truth_verdict"],
+  "properties": {
+    "image_filename": {
+      "type": "string",
+      "description": "Filename of the image in dataset/images/ (e.g., 'sample_001.jpg')"
+    },
+    "annotator": {
+      "type": "string",
+      "description": "Name or ID of the person who created this annotation"
+    },
+    "annotation_date": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO 8601 date when this annotation was created (YYYY-MM-DD)"
+    },
+    "product_info": {
+      "type": "object",
+      "required": ["product_name", "brand", "category", "package_type"],
+      "properties": {
+        "product_name": {
+          "type": "string",
+          "description": "Full product name as printed on the label"
+        },
+        "brand": {
+          "type": "string",
+          "description": "Brand name"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["food", "cosmetics", "pharmaceuticals", "household", "electronics", "stationery", "general"],
+          "description": "Product category matching rules_lmpc.json commodity_categories"
+        },
+        "package_type": {
+          "type": "string",
+          "enum": ["pouch", "box", "bottle", "can", "tube", "jar", "sachet", "blister_pack", "carton", "wrapper", "bag", "other"],
+          "description": "Physical packaging type"
+        },
+        "is_imported": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the product is imported (triggers country_of_origin requirement)"
+        }
+      }
+    },
+    "image_quality": {
+      "type": "object",
+      "properties": {
+        "lighting": {
+          "type": "string",
+          "enum": ["good", "moderate", "poor"],
+          "description": "Overall lighting quality"
+        },
+        "focus": {
+          "type": "string",
+          "enum": ["sharp", "slightly_blurry", "blurry"],
+          "description": "Text sharpness/focus quality"
+        },
+        "glare": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether significant glare/reflection is present"
+        },
+        "skew_angle_degrees": {
+          "type": "number",
+          "description": "Estimated rotation/skew angle in degrees (0 = perfectly upright)"
+        },
+        "curved_surface": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the label is on a curved surface (bottle, can, etc.)"
+        },
+        "multilingual": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the label contains text in multiple languages (e.g., Hindi + English)"
+        },
+        "languages_present": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of languages visible on the label (e.g., ['English', 'Hindi'])"
+        }
+      }
+    },
+    "ground_truth_fields": {
+      "type": "object",
+      "description": "The actual values present (or absent) on the label, as read by a human annotator",
+      "properties": {
+        "commodity_name": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "value": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        },
+        "net_quantity": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "value": { "type": "string", "description": "Exact text as printed, e.g., '200g' or 'Net Wt. 500 ml'" },
+            "numeric_value": { "type": "number" },
+            "unit": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        },
+        "mrp": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "value": { "type": "string", "description": "Exact text as printed, e.g., 'MRP ₹45.00'" },
+            "numeric_value": { "type": "number" },
+            "notes": { "type": "string" }
+          }
+        },
+        "tax_declaration": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "value": { "type": "string", "description": "Exact phrasing, e.g., '(Incl. of all taxes)'" },
+            "notes": { "type": "string" }
+          }
+        },
+        "manufacturer_info": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "entity_name": { "type": "string" },
+            "address": { "type": "string" },
+            "type": { "type": "string", "enum": ["manufacturer", "packer", "importer", "marketer"] },
+            "notes": { "type": "string" }
+          }
+        },
+        "date_manufacture": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "value": { "type": "string", "description": "Exact text as printed, e.g., 'MFG 06/2026'" },
+            "parsed_date": { "type": "string", "format": "date", "description": "Normalized to YYYY-MM-DD or YYYY-MM" },
+            "notes": { "type": "string" }
+          }
+        },
+        "date_expiry": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "value": { "type": "string" },
+            "parsed_date": { "type": "string", "format": "date" },
+            "is_expired": { "type": "boolean" },
+            "notes": { "type": "string" }
+          }
+        },
+        "consumer_care": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "phone": { "type": "string" },
+            "email": { "type": "string" },
+            "address": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        },
+        "country_of_origin": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "value": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        },
+        "unit_sale_price": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "value": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        },
+        "batch_lot_number": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "value": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        },
+        "fssai_license": {
+          "type": ["object", "null"],
+          "properties": {
+            "present": { "type": "boolean" },
+            "value": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "ground_truth_verdict": {
+      "type": "string",
+      "enum": ["COMPLIANT", "NON_COMPLIANT", "REQUIRES_MANUAL_REVIEW"],
+      "description": "Human-determined compliance verdict for this label"
+    },
+    "known_violations": {
+      "type": "array",
+      "description": "List of violations identified by the human annotator",
+      "items": {
+        "type": "object",
+        "required": ["field_id", "violation_type", "severity"],
+        "properties": {
+          "field_id": { "type": "string" },
+          "violation_type": {
+            "type": "string",
+            "enum": ["missing", "malformed", "font_too_small", "wrong_unit", "expired", "dual_pricing"]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["CRITICAL", "MAJOR", "MINOR"]
+          },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Any additional observations about this label (OCR challenges, unusual layout, etc.)"
+    }
+  }
+}

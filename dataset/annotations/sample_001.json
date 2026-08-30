@@ -1,0 +1,99 @@
+{
+  "image_filename": "sample_001.jpg",
+  "annotator": "team_member_1",
+  "annotation_date": "2026-08-26",
+  "product_info": {
+    "product_name": "Parle-G Gold Biscuits",
+    "brand": "Parle",
+    "category": "food",
+    "package_type": "wrapper",
+    "is_imported": false
+  },
+  "image_quality": {
+    "lighting": "good",
+    "focus": "sharp",
+    "glare": false,
+    "skew_angle_degrees": 2.5,
+    "curved_surface": false,
+    "multilingual": true,
+    "languages_present": [
+      "English",
+      "Hindi"
+    ]
+  },
+  "ground_truth_fields": {
+    "commodity_name": {
+      "present": true,
+      "value": "Glucose Biscuits",
+      "notes": "Generic name printed below brand name"
+    },
+    "net_quantity": {
+      "present": true,
+      "value": "Net Wt. 200g",
+      "numeric_value": 200,
+      "unit": "g",
+      "notes": ""
+    },
+    "mrp": {
+      "present": true,
+      "value": "MRP ₹30.00",
+      "numeric_value": 30.00,
+      "notes": ""
+    },
+    "tax_declaration": {
+      "present": true,
+      "value": "(Incl. of all taxes)",
+      "notes": "Printed directly below MRP"
+    },
+    "manufacturer_info": {
+      "present": true,
+      "entity_name": "Parle Products Pvt. Ltd.",
+      "address": "Vile Parle (E), Mumbai - 400057, Maharashtra, India",
+      "type": "manufacturer",
+      "notes": ""
+    },
+    "date_manufacture": {
+      "present": true,
+      "value": "MFG 06/2026",
+      "parsed_date": "2026-06",
+      "notes": ""
+    },
+    "date_expiry": {
+      "present": true,
+      "value": "Best Before 9 months from Mfg",
+      "parsed_date": null,
+      "is_expired": false,
+      "notes": "Relative expiry format — not an absolute date"
+    },
+    "consumer_care": {
+      "present": true,
+      "phone": "1800-123-4567",
+      "email": "consumer@parle.com",
+      "address": "",
+      "notes": "Toll-free number printed on back panel"
+    },
+    "country_of_origin": {
+      "present": false,
+      "value": null,
+      "notes": "Not required — domestic product"
+    },
+    "unit_sale_price": {
+      "present": false,
+      "value": null,
+      "notes": "Not printed on this pack"
+    },
+    "batch_lot_number": {
+      "present": true,
+      "value": "B.No. A2606K12",
+      "notes": ""
+    },
+    "fssai_license": {
+      "present": true,
+      "value": "10012345678901",
+      "notes": "14-digit FSSAI number with logo"
+    }
+  },
+  "ground_truth_verdict": "COMPLIANT",
+  "known_violations": [],
+  "notes": "Clean, well-printed label. Good baseline test case for the OCR pipeline."
+}
