@@ -17,9 +17,11 @@
 
 ### 🎬 Live Demo
 
-![LMPC Compliance Platform Demo](docs/demo.gif)
+<video src="docs/demo.mp4" controls width="100%" poster="docs/solution_architecture.jpg">
+  Your browser does not support the video tag. <a href="docs/demo.mp4">Download the demo video</a>.
+</video>
 
-*Working prototype — product label upload, automated OCR extraction, Rule Engine compliance analysis, and statutory violation report generation.*
+*Working prototype with audio walkthrough — product label upload, automated OCR extraction, Rule Engine compliance analysis, and statutory violation report generation.*
 
 ---
 
