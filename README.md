@@ -17,11 +17,11 @@
 
 ### 🎬 Live Demo
 
-<video src="docs/demo.mp4" controls width="100%" poster="docs/solution_architecture.jpg">
-  Your browser does not support the video tag. <a href="docs/demo.mp4">Download the demo video</a>.
-</video>
+[![LMPC Compliance Platform Demo — Click to Watch with Audio](docs/demo.gif)](https://github.com/harshithps35/Legal-Metrology-Packaged-Commodities-LMPC-AI-Compliance-Enforcement-Platform/blob/main/docs/demo.mp4)
 
-*Working prototype with audio walkthrough — product label upload, automated OCR extraction, Rule Engine compliance analysis, and statutory violation report generation.*
+> 🔊 **Click the preview above to watch the full demo with audio walkthrough** | [📥 Download Demo Video](https://github.com/harshithps35/Legal-Metrology-Packaged-Commodities-LMPC-AI-Compliance-Enforcement-Platform/raw/main/docs/demo.mp4)
+
+*Working prototype — product label upload, automated OCR extraction, Rule Engine compliance analysis, and statutory violation report generation.*
 
 ---
 
