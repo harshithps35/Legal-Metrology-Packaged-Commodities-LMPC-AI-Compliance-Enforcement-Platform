@@ -558,7 +558,15 @@ Below are real, high-resolution (2049 × 1152) browser captures from each of the
 
 ---
 
-### 9. FastAPI Interactive Swagger UI API Console (`/docs`)
+### 9. Statutory RBAC Access Restriction Gatekeeper (`/inspector`, `/clmo`, `/almo`)
+> **Role:** Security & Governance Boundary Enforcement  
+> **Key Capabilities:** Strict Role-Based Access Control (RBAC) preventing unauthorized persons, brand owners, or general citizens from infiltrating restricted officer consoles and enforcement records.
+
+![Statutory Access Restricted](docs/screenshot_access_restricted.png)
+
+---
+
+### 10. FastAPI Interactive Swagger UI API Console (`/docs`)
 > **Role:** Developers & Integrators  
 > **Key Capabilities:** Live interactive testing of all REST API endpoints (`/scan`, `/employer`, `/inspector`, `/supervisor`) with full OpenAPI 3.0 schema inspection.
 
