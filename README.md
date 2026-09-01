@@ -492,18 +492,77 @@ $$\text{PDP Area} = \text{Width (cm)} \times \text{Height (cm)}$$
 
 ## 🖼️ Platform UI Screenshots & Multi-Tier Portals
 
-The platform delivers 6 dedicated role-segregated workbenches plus a public consumer authenticity verifier and interactive Swagger UI:
+Below are real, high-resolution browser captures from each of the 6 role-based governance portals, the public verifier, the quick-role authentication gateway, and the FastAPI interactive Swagger UI:
 
-| Portal Level & Role | Interactive UI Screenshot | Operational Purpose |
-| :--- | :---: | :--- |
-| **Level 1: Commissioner Apex Directorate** (`/commissioner`) | ![Commissioner Portal](docs/screenshot_commissioner.png) | Statewide enforcement heatmap, compounding appeals, officer warrants, and high-volume quotas. |
-| **Level 2: Chief Legal Metrology Officer (CLMO)** (`/clmo`) | ![CLMO Portal](docs/screenshot_clmo.png) | Final statutory clearance adjudication, SHA-256 seal signing, and 15-day resolution desk referrals. |
-| **Level 3: Assistant Legal Metrology Officer (ALMO)** (`/almo`) | ![ALMO Portal](docs/screenshot_almo.png) | Zonal inspection squad dispatch, Caliper VIR verification, and compound fee orders. |
-| **Level 4: Lead Inspector Workbench** (`/inspector`) | ![Lead Inspector Workbench](docs/screenshot_lead_inspector.png) | Pre-market dossier triage, Rule 11 tampering evidence room, and 15-day statutory resolution notices. |
-| **Level 5: Sub-Inspector Squad** (`/sub-inspector`) | ![Sub-Inspector Squad](docs/screenshot_sub_inspector.png) | On-site factory visits, GPS camera capture, digital Vernier caliper sync, and barcode scanning. |
-| **Level 6: Employer / Brand Owner Suite** (`/employer`) | ![Employer Pre-Market Suite](docs/screenshot_employer.png) | Multi-angle artwork die-line upload, live OCR, Schedule II font checks, and certificate downloads. |
-| **Public Verifier Portal** (`/verify/:cert_no`) | ![Public Verification Portal](docs/screenshot_public_verification.png) | Real-time citizen and customs verification of issued SHA-256 QR clearance certificates. |
-| **FastAPI Swagger UI** (`/docs`) | ![Swagger UI API Console](docs/screenshot_swagger_ui.png) | Interactive REST API console for live endpoint testing and OpenAPI 3.0 schema inspection. |
+### 1. Level 6 — Employer / Brand Owner Pre-Market Suite (`/employer`)
+> **Role:** Brand Owner / Packaging Manufacturer (e.g., Parle, Fortune, Amul)  
+> **Key Capabilities:** Pre-market packaging die-line upload, live OCR text extraction, Schedule II numeral font height measurement, Rule 11 tampering validation, and digital certificate downloads.
+
+![Employer Brand Owner Suite](docs/screenshot_employer.png)
+
+---
+
+### 2. Level 5 — Sub-Inspector Squad & Field Mobility Portal (`/sub-inspector`)
+> **Role:** Sub-Inspector Field Squad & Resolution Desk  
+> **Key Capabilities:** On-site factory visits, GPS camera capture, live digital Vernier caliper synchronization, barcode scanning, and 15-day resolution desk verification.
+
+![Sub-Inspector Field Squad Portal](docs/screenshot_sub_inspector.png)
+
+---
+
+### 3. Level 4 — Lead Inspector Workbench (`/inspector`)
+> **Role:** Senior Legal Metrology Inspector (LMI)  
+> **Key Capabilities:** Pre-market dossier triage queue, Rule 11 tampering evidence room, 15-day statutory resolution notice generation, and endorsement to ALMO.
+
+![Lead Inspector Workbench](docs/screenshot_lead_inspector.png)
+
+---
+
+### 4. Level 3 — Assistant Legal Metrology Officer (ALMO) Sanctions Desk (`/almo`)
+> **Role:** Zonal Supervisory Authority  
+> **Key Capabilities:** Inspection squad dispatch, Caliper VIR verification, compound fee assessment, and dossier forwarding to CLMO.
+
+![ALMO Sanctions Desk](docs/screenshot_almo.png)
+
+---
+
+### 5. Level 2 — Chief Legal Metrology Officer (CLMO) Adjudication Portal (`/clmo`)
+> **Role:** Apex Directorate Adjudication Officer  
+> **Key Capabilities:** Final statutory clearance adjudication, immutable SHA-256 seal signing, dynamic QR certificate issuance, and compounding orders.
+
+![CLMO Adjudication Portal](docs/screenshot_clmo.png)
+
+---
+
+### 6. Level 1 — State Commissioner Apex Directorate (`/commissioner`)
+> **Role:** State Commissioner / Director of Legal Metrology  
+> **Key Capabilities:** Statewide compliance analytics heatmap, high-severity compounding appeals, officer warrants, and certificate revocation controls.
+
+![Commissioner Apex Directorate](docs/screenshot_commissioner.png)
+
+---
+
+### 7. Public Consumer & Customs QR Verification Portal (`/verify/:cert_no`)
+> **Role:** Citizens, Retailers, Customs Officers, and Field Regulators  
+> **Key Capabilities:** Real-time cryptographic verification of issued clearance certificates, SHA-256 tamper detection, and official Government of India authenticity seal.
+
+![Public Certificate Verification Portal](docs/screenshot_public_verification.png)
+
+---
+
+### 8. Quick Role-Based Authentication Gateway (`/login`)
+> **Role:** Universal 1-Click Role Gateway  
+> **Key Capabilities:** Quick-switching between all 6 governance tiers with pre-configured demonstration credentials.
+
+![Quick Role Authentication Gateway](docs/screenshot_login.png)
+
+---
+
+### 9. FastAPI Interactive Swagger UI API Console (`/docs`)
+> **Role:** Developers & Integrators  
+> **Key Capabilities:** Live interactive testing of all REST API endpoints (`/scan`, `/employer`, `/inspector`, `/supervisor`) with full OpenAPI 3.0 schema inspection.
+
+![FastAPI Interactive Swagger UI](docs/screenshot_swagger_ui.png)
 
 ---
 
