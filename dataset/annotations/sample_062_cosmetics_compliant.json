@@ -1,0 +1,27 @@
+{
+  "image_filename": "sample_062_cosmetics_compliant.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Garnier Purifying Neem Face Wash",
+    "brand": "Garnier",
+    "category": "cosmetics",
+    "sector_group": "Personal Care & Cosmetics",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Purifying Neem Face Wash",
+    "net_quantity": 150.0,
+    "net_quantity_unit": "ml",
+    "mrp": 170.0,
+    "mrp_tampered": false,
+    "mfg_date": "05/2026",
+    "consumer_care_present": true,
+    "manufacturer_present": true,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "COMPLIANT",
+  "expected_violations": [],
+  "test_condition": "COMPLIANT",
+  "test_description": "Compact Panel Layout Compliant"
+}

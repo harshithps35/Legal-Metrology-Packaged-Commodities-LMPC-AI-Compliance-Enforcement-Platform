@@ -1,0 +1,29 @@
+{
+  "image_filename": "sample_058_cosmetics_non_standard_units.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Pears Intense Repair Conditioner",
+    "brand": "Pears",
+    "category": "cosmetics",
+    "sector_group": "Personal Care & Cosmetics",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Intense Repair Conditioner",
+    "net_quantity": 175.0,
+    "net_quantity_unit": "ml",
+    "mrp": 195.0,
+    "mrp_tampered": false,
+    "mfg_date": "05/2026",
+    "consumer_care_present": true,
+    "manufacturer_present": true,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "NON_COMPLIANT",
+  "expected_violations": [
+    "RULE_SCHEDULE_II_UNIT_STANDARD"
+  ],
+  "test_condition": "NON_STANDARD_UNITS",
+  "test_description": "Schedule II/Rule 13 Violation: Non-metric unit usage"
+}

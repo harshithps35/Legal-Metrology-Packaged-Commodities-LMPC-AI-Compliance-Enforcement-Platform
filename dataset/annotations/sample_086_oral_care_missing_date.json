@@ -1,0 +1,29 @@
+{
+  "image_filename": "sample_086_oral_care_missing_date.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Sensodyne Dental Cream Strong Teeth",
+    "brand": "Sensodyne",
+    "category": "general",
+    "sector_group": "Oral Care",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Dental Cream Strong Teeth",
+    "net_quantity": 150.0,
+    "net_quantity_unit": "g",
+    "mrp": 98.0,
+    "mrp_tampered": false,
+    "mfg_date": null,
+    "consumer_care_present": true,
+    "manufacturer_present": true,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "NON_COMPLIANT",
+  "expected_violations": [
+    "RULE_6_1_D_DATE_MANUFACTURE"
+  ],
+  "test_condition": "MISSING_DATE",
+  "test_description": "Rule 6(1)(d) Violation: Manufacturing date missing"
+}

@@ -1,5 +1,5 @@
 """
-LMPC Compliance Platform — Empirical Benchmark Runner (108 FMCG Packages)
+LMPC Compliance Platform — Empirical Benchmark Runner (120 FMCG Packages)
 Author: Srusthi (QA & Dataset Engineer) & Harshith P S (Team Lead)
 Team PredictXY — Smart India Hackathon 2026
 

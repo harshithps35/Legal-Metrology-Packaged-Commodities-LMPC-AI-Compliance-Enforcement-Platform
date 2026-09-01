@@ -1,15 +1,15 @@
 """
-LMPC Compliance Platform — 100+ FMCG Packaging Benchmark Generator
+LMPC Compliance Platform — 120-Sample FMCG Packaging Benchmark Generator
 Author: Srusthi (QA & Dataset Engineer) & Harshith P S (Team Lead)
 Team PredictXY — SIH 2026 Problem Statement 26034
 
-Generates 108 diverse FMCG packaging label images across 6 commercial sectors:
-1. Food & Bakery (Biscuits, Cookies, Rusk, Noodles, Oats, Cereal) - 18 samples
-2. Edible Oils & Ghee (Sunflower, Mustard, Groundnut, Olive, Desi Ghee, Rice Bran) - 18 samples
-3. Personal Care & Cosmetics (Shampoo, Face Wash, Moisturizer, Soap, Body Wash, Hair Oil) - 18 samples
-4. Oral Care (Toothpaste, Mouthwash, Toothpowder, Herbal Paste, Sensitive Gel) - 18 samples
-5. Perishable Dairy & Beverages (Pasteurized Milk, Butter, Paneer, Curd, Fruit Juice, Tea) - 18 samples
-6. Spices & Condiments (Garam Masala, Turmeric, Chilli Powder, Salt, Tomato Ketchup, Pickles) - 18 samples
+Generates 120 diverse FMCG packaging label images across 6 commercial sectors:
+1. Food & Bakery (Biscuits, Cookies, Rusk, Noodles, Oats, Cereal) - 30 samples
+2. Edible Oils & Ghee (Sunflower, Mustard, Groundnut, Olive, Desi Ghee, Rice Bran) - 20 samples
+3. Personal Care & Cosmetics (Shampoo, Face Wash, Moisturizer, Soap, Body Wash, Hair Oil) - 20 samples
+4. Oral Care (Toothpaste, Mouthwash, Toothpowder, Herbal Paste, Sensitive Gel) - 20 samples
+5. Perishable Dairy & Beverages (Pasteurized Milk, Butter, Paneer, Curd, Fruit Juice, Tea) - 15 samples
+6. Spices & Condiments (Garam Masala, Turmeric, Chilli Powder, Salt, Tomato Ketchup, Pickles) - 15 samples
 
 Includes both compliant variations and statutory non-compliance test cases:
 - Standard Rule 6 Compliant
@@ -18,6 +18,7 @@ Includes both compliant variations and statutory non-compliance test cases:
 - Rule 6(1)(g) Consumer Care Non-compliance (missing phone/email)
 - Rule 6(1)(d) Date Declaration Defect (missing or invalid date)
 - Non-standard Statutory Units (unauthorized abbreviations)
+- Missing Manufacturer Address (Rule 6(1)(a))
 """
 
 import os
@@ -135,149 +136,163 @@ TEST_CONDITIONS = [
     {"type": "MISSING_MANUFACTURER", "desc": "Rule 6(1)(a) Violation: Manufacturer address omitted"}
 ]
 
-def generate_108_dataset():
+# Weighted sample counts per sector: Food=30, Oil=20, Cosmetics=20, Oral=20, Dairy=15, Spices=15 => Total=120
+SECTOR_SAMPLE_COUNTS = {
+    "food": 30,
+    "edible_oil": 20,
+    "cosmetics": 20,
+    "oral_care": 20,
+    "dairy_beverages": 15,
+    "spices": 15
+}
+
+def generate_120_dataset():
     total_generated = 0
     sample_index = 1
     width, height = 750, 460
 
-    print("🚀 Initiating 108-Sample FMCG Benchmark Generation for LMPC...")
+    print("🚀 Initiating 120-Sample FMCG Benchmark Generation for LMPC...")
 
     for sector_key, sector_data in SECTORS.items():
         commodities = sector_data["commodities"]
         brands = sector_data["brands"]
+        target_count = SECTOR_SAMPLE_COUNTS[sector_key]
+        num_conditions = len(TEST_CONDITIONS)
 
-        # Generate 18 items per sector (2 cycles of 9 test conditions)
-        for cycle in range(2):
-            for cond_idx, condition in enumerate(TEST_CONDITIONS):
-                comm = commodities[cond_idx % len(commodities)]
-                brand = brands[(cond_idx + cycle * 3) % len(brands)]
+        # Generate target_count items per sector by cycling through conditions
+        for item_idx in range(target_count):
+            cycle = item_idx // num_conditions
+            cond_idx = item_idx % num_conditions
+            condition = TEST_CONDITIONS[cond_idx]
+            comm = commodities[cond_idx % len(commodities)]
+            brand = brands[(cond_idx + cycle * 3) % len(brands)]
 
-                comm_name, net_qty_str, net_qty_val, net_unit, mrp_val, usp_str = comm
+            comm_name, net_qty_str, net_qty_val, net_unit, mrp_val, usp_str = comm
 
-                filename = f"sample_{sample_index:03d}_{sector_key}_{condition['type'].lower()}.jpg"
-                product_full_name = f"{brand} {comm_name}"
+            filename = f"sample_{sample_index:03d}_{sector_key}_{condition['type'].lower()}.jpg"
+            product_full_name = f"{brand} {comm_name}"
 
-                # Configure compliance attributes based on condition
-                is_compliant = condition["type"] == "COMPLIANT"
-                expected_violations = []
+            # Configure compliance attributes based on condition
+            is_compliant = condition["type"] == "COMPLIANT"
+            expected_violations = []
 
-                # Baseline lines
-                lines = []
-                lines.append((f"{brand.upper()} {comm_name.upper()}", 22, (20, 20, 20), False))
-                lines.append((f"Generic Name: {comm_name}", 15, (40, 40, 40), False))
+            # Baseline lines
+            lines = []
+            lines.append((f"{brand.upper()} {comm_name.upper()}", 22, (20, 20, 20), False))
+            lines.append((f"Generic Name: {comm_name}", 15, (40, 40, 40), False))
 
-                # Net Quantity line
-                if condition["type"] == "FONT_TOO_SMALL":
-                    # Miniature font below statutory height
-                    lines.append((f"Net Weight / Volume: {net_qty_str}", 9, (80, 80, 80), True))
-                    expected_violations.append("RULE_SCHEDULE_II_FONT_HEIGHT")
-                elif condition["type"] == "NON_STANDARD_UNITS":
-                    lines.append(("Net Weight: 1.5 lbs", 18, (10, 10, 10), False))
-                    expected_violations.append("RULE_SCHEDULE_II_UNIT_STANDARD")
-                else:
-                    lines.append((f"Net Quantity: {net_qty_str}", 19, (10, 10, 10), False))
+            # Net Quantity line
+            if condition["type"] == "FONT_TOO_SMALL":
+                # Miniature font below statutory height
+                lines.append((f"Net Weight / Volume: {net_qty_str}", 9, (80, 80, 80), True))
+                expected_violations.append("RULE_SCHEDULE_II_FONT_HEIGHT")
+            elif condition["type"] == "NON_STANDARD_UNITS":
+                lines.append(("Net Weight: 1.5 lbs", 18, (10, 10, 10), False))
+                expected_violations.append("RULE_SCHEDULE_II_UNIT_STANDARD")
+            else:
+                lines.append((f"Net Quantity: {net_qty_str}", 19, (10, 10, 10), False))
 
-                # MRP & Unit Sale Price
-                mrp_line = f"MRP Rs {mrp_val:.2f} (Inclusive of all taxes)"
-                lines.append((mrp_line, 18, (10, 10, 10), False))
-                lines.append((f"Unit Sale Price: {usp_str}", 14, (60, 60, 60), False))
+            # MRP & Unit Sale Price
+            mrp_line = f"MRP Rs {mrp_val:.2f} (Inclusive of all taxes)"
+            lines.append((mrp_line, 18, (10, 10, 10), False))
+            lines.append((f"Unit Sale Price: {usp_str}", 14, (60, 60, 60), False))
 
-                # Dates
-                if condition["type"] == "MISSING_DATE":
-                    expected_violations.append("RULE_6_1_D_DATE_MANUFACTURE")
-                else:
-                    lines.append(("Mfg Date: 05/2026   Best Before: 11/2026", 14, (40, 40, 40), False))
+            # Dates
+            if condition["type"] == "MISSING_DATE":
+                expected_violations.append("RULE_6_1_D_DATE_MANUFACTURE")
+            else:
+                lines.append(("Mfg Date: 05/2026   Best Before: 11/2026", 14, (40, 40, 40), False))
 
-                # Manufacturer
-                if condition["type"] == "MISSING_MANUFACTURER":
-                    expected_violations.append("RULE_6_1_A_NAME_ADDRESS")
-                else:
-                    lines.append((f"Mfd By: {brand} India Pvt Ltd, Industrial Area, Noida 201301", 13, (50, 50, 50), False))
+            # Manufacturer
+            if condition["type"] == "MISSING_MANUFACTURER":
+                expected_violations.append("RULE_6_1_A_NAME_ADDRESS")
+            else:
+                lines.append((f"Mfd By: {brand} India Pvt Ltd, Industrial Area, Noida 201301", 13, (50, 50, 50), False))
 
-                # Consumer Care
-                if condition["type"] == "MISSING_CONSUMER_CARE":
-                    expected_violations.append("RULE_6_1_G_CONSUMER_CARE")
-                else:
-                    lines.append((f"Consumer Care: 1800-11-2233 / care@{brand.lower().replace(' ', '')}.com", 13, (50, 50, 50), False))
+            # Consumer Care
+            if condition["type"] == "MISSING_CONSUMER_CARE":
+                expected_violations.append("RULE_6_1_G_CONSUMER_CARE")
+            else:
+                lines.append((f"Consumer Care: 1800-11-2233 / care@{brand.lower().replace(' ', '')}.com", 13, (50, 50, 50), False))
 
-                # Regulatory seals
-                lines.append(("FSSAI Lic No: 10022011000452  •  Country of Origin: India", 13, (50, 50, 50), False))
+            # Regulatory seals
+            lines.append(("FSSAI Lic No: 10022011000452  •  Country of Origin: India", 13, (50, 50, 50), False))
 
-                # Create Canvas
-                img = Image.new("RGB", (width, height), color=sector_data["bg"])
-                draw = ImageDraw.Draw(img)
+            # Create Canvas
+            img = Image.new("RGB", (width, height), color=sector_data["bg"])
+            draw = ImageDraw.Draw(img)
 
-                # Outer border
-                draw.rectangle([10, 10, width - 10, height - 10], outline=sector_data["border"], width=3)
-                draw.rectangle([15, 15, width - 15, height - 15], outline=(210, 210, 210), width=1)
+            # Outer border
+            draw.rectangle([10, 10, width - 10, height - 10], outline=sector_data["border"], width=3)
+            draw.rectangle([15, 15, width - 15, height - 15], outline=(210, 210, 210), width=1)
 
-                # Statutory Header banner
-                draw.rectangle([20, 20, 360, 44], fill=sector_data["border"])
-                draw.text((28, 25), "LMPC STATUTORY DECLARATION PANEL", fill=(255, 255, 255))
+            # Statutory Header banner
+            draw.rectangle([20, 20, 360, 44], fill=sector_data["border"])
+            draw.text((28, 25), "LMPC STATUTORY DECLARATION PANEL", fill=(255, 255, 255))
 
-                # Render text lines
-                y_offset = 58
-                for text, size, color, is_small in lines:
-                    draw.text((30, y_offset), text, fill=color)
-                    y_offset += size + 16
+            # Render text lines
+            y_offset = 58
+            for text, size, color, is_small in lines:
+                draw.text((30, y_offset), text, fill=color)
+                y_offset += size + 16
 
-                # Render simulated Barcode at bottom right
-                bx, by = width - 190, height - 90
-                draw.rectangle([bx, by, bx + 160, by + 60], fill=(255, 255, 255), outline=(0, 0, 0), width=1)
-                for b_i in range(14):
-                    b_w = 2 if (b_i % 3 == 0) else 3
-                    draw.line([(bx + 10 + b_i * 10, by + 8), (bx + 10 + b_i * 10, by + 42)], fill=(0, 0, 0), width=b_w)
-                draw.text((bx + 18, by + 44), f"89010{sample_index:07d}", fill=(0, 0, 0))
+            # Render simulated Barcode at bottom right
+            bx, by = width - 190, height - 90
+            draw.rectangle([bx, by, bx + 160, by + 60], fill=(255, 255, 255), outline=(0, 0, 0), width=1)
+            for b_i in range(14):
+                b_w = 2 if (b_i % 3 == 0) else 3
+                draw.line([(bx + 10 + b_i * 10, by + 8), (bx + 10 + b_i * 10, by + 42)], fill=(0, 0, 0), width=b_w)
+            draw.text((bx + 18, by + 44), f"89010{sample_index:07d}", fill=(0, 0, 0))
 
-                # Special Visual Effect for Rule 11 Price Tampering: Dual Sticker Overlay
-                if condition["type"] == "RULE11_PRICE_TAMPERING":
-                    expected_violations.append("RULE_11_PRICE_TAMPERING")
-                    # Draw a glaring fluorescent price sticker overlaid across the panel
-                    st_x, st_y = width - 260, 130
-                    draw.rectangle([st_x, st_y, st_x + 190, st_y + 65], fill=(254, 240, 138), outline=(220, 38, 38), width=2)
-                    draw.text((st_x + 10, st_y + 8), "REVISED RETAIL PRICE", fill=(185, 28, 28))
-                    draw.text((st_x + 10, st_y + 28), f"SPECIAL MRP: Rs {mrp_val * 1.25:.2f}", fill=(220, 38, 38))
-                    draw.text((st_x + 10, st_y + 48), "*Overlay Sticker Applied", fill=(100, 100, 100))
+            # Special Visual Effect for Rule 11 Price Tampering: Dual Sticker Overlay
+            if condition["type"] == "RULE11_PRICE_TAMPERING":
+                expected_violations.append("RULE_11_PRICE_TAMPERING")
+                # Draw a glaring fluorescent price sticker overlaid across the panel
+                st_x, st_y = width - 260, 130
+                draw.rectangle([st_x, st_y, st_x + 190, st_y + 65], fill=(254, 240, 138), outline=(220, 38, 38), width=2)
+                draw.text((st_x + 10, st_y + 8), "REVISED RETAIL PRICE", fill=(185, 28, 28))
+                draw.text((st_x + 10, st_y + 28), f"SPECIAL MRP: Rs {mrp_val * 1.25:.2f}", fill=(220, 38, 38))
+                draw.text((st_x + 10, st_y + 48), "*Overlay Sticker Applied", fill=(100, 100, 100))
 
-                # Save Image
-                img_path = os.path.join(IMG_DIR, filename)
-                img.save(img_path, quality=95)
+            # Save Image
+            img_path = os.path.join(IMG_DIR, filename)
+            img.save(img_path, quality=95)
 
-                # Save Annotation JSON
-                ann_data = {
-                    "image_filename": filename,
-                    "annotator": "Srusthi (QA Engineer)",
-                    "annotation_date": "2026-09-01",
-                    "product_info": {
-                        "product_name": product_full_name,
-                        "brand": brand,
-                        "category": sector_key if sector_key in ["food", "cosmetics"] else "general",
-                        "sector_group": sector_data["sector_name"],
-                        "package_type": "box"
-                    },
-                    "ground_truth_fields": {
-                        "commodity_name": comm_name,
-                        "net_quantity": net_qty_val,
-                        "net_quantity_unit": net_unit,
-                        "mrp": mrp_val,
-                        "mrp_tampered": (condition["type"] == "RULE11_PRICE_TAMPERING"),
-                        "mfg_date": "05/2026" if condition["type"] != "MISSING_DATE" else None,
-                        "consumer_care_present": (condition["type"] != "MISSING_CONSUMER_CARE"),
-                        "manufacturer_present": (condition["type"] != "MISSING_MANUFACTURER"),
-                        "font_compliant": (condition["type"] != "FONT_TOO_SMALL")
-                    },
-                    "ground_truth_verdict": "COMPLIANT" if is_compliant else "NON_COMPLIANT",
-                    "expected_violations": expected_violations,
-                    "test_condition": condition["type"],
-                    "test_description": condition["desc"]
-                }
+            # Save Annotation JSON
+            ann_data = {
+                "image_filename": filename,
+                "annotator": "Srusthi (QA Engineer)",
+                "annotation_date": "2026-09-01",
+                "product_info": {
+                    "product_name": product_full_name,
+                    "brand": brand,
+                    "category": sector_key if sector_key in ["food", "cosmetics"] else "general",
+                    "sector_group": sector_data["sector_name"],
+                    "package_type": "box"
+                },
+                "ground_truth_fields": {
+                    "commodity_name": comm_name,
+                    "net_quantity": net_qty_val,
+                    "net_quantity_unit": net_unit,
+                    "mrp": mrp_val,
+                    "mrp_tampered": (condition["type"] == "RULE11_PRICE_TAMPERING"),
+                    "mfg_date": "05/2026" if condition["type"] != "MISSING_DATE" else None,
+                    "consumer_care_present": (condition["type"] != "MISSING_CONSUMER_CARE"),
+                    "manufacturer_present": (condition["type"] != "MISSING_MANUFACTURER"),
+                    "font_compliant": (condition["type"] != "FONT_TOO_SMALL")
+                },
+                "ground_truth_verdict": "COMPLIANT" if is_compliant else "NON_COMPLIANT",
+                "expected_violations": expected_violations,
+                "test_condition": condition["type"],
+                "test_description": condition["desc"]
+            }
 
-                ann_path = os.path.join(ANN_DIR, filename.replace(".jpg", ".json"))
-                with open(ann_path, "w", encoding="utf-8") as f:
-                    json.dump(ann_data, f, indent=2)
+            ann_path = os.path.join(ANN_DIR, filename.replace(".jpg", ".json"))
+            with open(ann_path, "w", encoding="utf-8") as f:
+                json.dump(ann_data, f, indent=2)
 
-                sample_index += 1
-                total_generated += 1
+            sample_index += 1
+            total_generated += 1
 
     print(f"✅ Successfully generated {total_generated} FMCG test labels and annotations across all 6 sectors!")
     print(f"   Images location: {IMG_DIR}")
@@ -285,4 +300,4 @@ def generate_108_dataset():
     return total_generated
 
 if __name__ == "__main__":
-    generate_108_dataset()
+    generate_120_dataset()
