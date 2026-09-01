@@ -13,7 +13,7 @@
 [![OpenCV](https://img.shields.io/badge/OpenCV-4.9.0-5C3EE8.svg?style=flat&logo=opencv&logoColor=white)](https://opencv.org)
 [![Tesseract OCR](https://img.shields.io/badge/Tesseract-5.3-blue.svg?style=flat)](https://github.com/tesseract-ocr/tesseract)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
 > 💡 **India's first platform to codify LMPC Rules 2011 into a machine-readable rule engine with end-to-end SHA-256 audit trail and tamper-proof chain of custody.**
@@ -774,7 +774,7 @@ Developed with pride for the **Ministry of Consumer Affairs, Food and Public Dis
 
 ## 📄 License & Statutory Notice
 
-This project is licensed under the [MIT License](./LICENSE) — see the [LICENSE](./LICENSE) file for details.  
+This project is **proprietary software** — all rights reserved. See the [LICENSE](./LICENSE) file for details. No permission is granted to use, copy, modify, or distribute this software without explicit written consent from Team PredictXY.  
 For contribution guidelines, code style, and PR workflows, please see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 This prototype has been developed for the **Legal Metrology Department, Ministry of Consumer Affairs, Food and Public Distribution, Government of India** under Smart India Hackathon (SIH 2026) Problem Statement 26034. All statutory rules and metrics are aligned with the Gazette of India notifications for the **Legal Metrology (Packaged Commodities) Rules, 2011**.

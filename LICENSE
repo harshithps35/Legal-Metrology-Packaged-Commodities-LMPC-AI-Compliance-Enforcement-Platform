@@ -1,16 +1,36 @@
-MIT License
+PROPRIETARY SOFTWARE LICENSE
 
-Copyright (c) 2026 Team PredictXY — Smart India Hackathon 2026
+Copyright (c) 2026 Harshith P S & Team PredictXY — Smart India Hackathon 2026
+All Rights Reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This software, including all source code, documentation, datasets, trained models,
+architecture designs, and associated materials (collectively, the "Software"), is
+the exclusive intellectual property of Team PredictXY.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+RESTRICTIONS:
+
+1. NO PERMISSION is granted to any person or entity to use, copy, modify, merge,
+   publish, distribute, sublicense, sell, or create derivative works of this
+   Software, in whole or in part, without prior written consent from the copyright
+   holder.
+
+2. This Software is provided solely for evaluation purposes by the Smart India
+   Hackathon (SIH) 2026 jury, the Ministry of Consumer Affairs (DoCA), and
+   authorized Government of India representatives.
+
+3. Unauthorized reproduction, distribution, reverse engineering, decompilation,
+   or disassembly of this Software is strictly prohibited and may result in
+   civil and criminal penalties under applicable Indian intellectual property laws,
+   including but not limited to the Copyright Act, 1957 and the Information
+   Technology Act, 2000.
+
+4. Any academic, research, or commercial use of this Software requires explicit
+   written authorization from:
+   
+   Harshith P S (Team Lead, Team PredictXY)
+   Contact: harshithps35@gmail.com
+
+DISCLAIMER:
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
