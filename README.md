@@ -494,21 +494,6 @@ $$\text{PDP Area} = \text{Width (cm)} \times \text{Height (cm)}$$
 
 Below are real, high-resolution (2049 × 1152) browser captures from each of the 6 role-based statutory governance portals, the public verifier, the quick-role authentication gateway, and the FastAPI interactive Swagger UI:
 
-### 🏛️ Executive Gallery: Complete 6-Tier Governance Hierarchy at a Glance
-
-| **Level 6 — Brand Owner Suite** | **Level 5 — Sub-Inspector Squad** | **Level 4 — Lead Inspector Workbench** |
-| :---: | :---: | :---: |
-| [![Brand Owner Suite](docs/screenshot_employer.png)](docs/screenshot_employer.png) | [![Sub-Inspector Squad](docs/screenshot_sub_inspector.png)](docs/screenshot_sub_inspector.png) | [![Lead Inspector Workbench](docs/screenshot_lead_inspector.png)](docs/screenshot_lead_inspector.png) |
-| *Die-line upload, Schedule II font checks* | *On-site GPS camera, Caliper sync* | *Dossier triage, Rule 11 tampering notices* |
-| **Level 3 — ALMO Sanctions Desk** | **Level 2 — CLMO Adjudication** | **Level 1 — Commissioner Directorate** |
-| [![ALMO Sanctions Desk](docs/screenshot_almo.png)](docs/screenshot_almo.png) | [![CLMO Adjudication](docs/screenshot_clmo.png)](docs/screenshot_clmo.png) | [![Commissioner Directorate](docs/screenshot_commissioner.png)](docs/screenshot_commissioner.png) |
-| *Visit orders, VIR review, squad dispatch* | *Statutory clearance, SHA-256 seal signing* | *Statewide heatmap, policy & revocations* |
-| **Public QR Verifier** | **Official Digital Certificate** | **FastAPI Swagger Console** |
-| [![Public QR Verifier](docs/screenshot_public_verification.png)](docs/screenshot_public_verification.png) | [![Official Certificate](docs/screenshot_certificate.png)](docs/screenshot_certificate.png) | [![FastAPI Swagger UI](docs/screenshot_swagger_ui.png)](docs/screenshot_swagger_ui.png) |
-| *Real-time cryptographic citizen check* | *SHA-256 sealed clearance certificate* | *Interactive OpenAPI 3.0 test console* |
-
----
-
 ### 1. Level 6 — Employer / Brand Owner Pre-Market Suite (`/employer`)
 > **Role:** Brand Owner / Packaging Manufacturer (e.g., Parle, Fortune, Amul)  
 > **Key Capabilities:** Pre-market packaging die-line upload, live OCR text extraction, Schedule II numeral font height measurement, Rule 11 tampering validation, and digital certificate downloads.
@@ -565,15 +550,7 @@ Below are real, high-resolution (2049 × 1152) browser captures from each of the
 
 ---
 
-### 8. Official Cryptographic Digital Clearance Certificate (`/verify/:cert_no`)
-> **Role:** All Regulators, Supply Chain Partners, and Customs  
-> **Key Capabilities:** Immutable SHA-256 signed digital clearance certificate with dynamic QR validation, declared PDP metrics, and statutory legal clearance under LMPC Rules 2011.
-
-![Official Cryptographic Digital Clearance Certificate](docs/screenshot_certificate.png)
-
----
-
-### 9. Quick Role-Based Authentication Gateway (`/login`)
+### 8. Quick Role-Based Authentication Gateway (`/login`)
 > **Role:** Universal 1-Click Role Gateway  
 > **Key Capabilities:** Quick-switching between all 6 governance tiers with pre-configured demonstration credentials.
 
@@ -581,7 +558,7 @@ Below are real, high-resolution (2049 × 1152) browser captures from each of the
 
 ---
 
-### 10. FastAPI Interactive Swagger UI API Console (`/docs`)
+### 9. FastAPI Interactive Swagger UI API Console (`/docs`)
 > **Role:** Developers & Integrators  
 > **Key Capabilities:** Live interactive testing of all REST API endpoints (`/scan`, `/employer`, `/inspector`, `/supervisor`) with full OpenAPI 3.0 schema inspection.
 
