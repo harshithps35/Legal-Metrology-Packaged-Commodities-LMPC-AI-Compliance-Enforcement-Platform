@@ -542,11 +542,11 @@ Below are real, high-resolution (2049 × 1152) browser captures from each of the
 
 ---
 
-### 7. Public Consumer & Customs QR Verification Portal (`/verify/:cert_no`)
+### 7. Official Pre-Market Packaging Clearance Certificate (`/verify/:cert_no`)
 > **Role:** Citizens, Retailers, Customs Officers, and Field Regulators  
-> **Key Capabilities:** Real-time cryptographic verification of issued clearance certificates, SHA-256 tamper detection, and official Government of India authenticity seal.
+> **Key Capabilities:** Cryptographically verifiable packaging clearance certificate under LMPC Rules 2011, itemized statutory compliance evaluation record, CLMO Directorate clearance seal, and dynamic QR verification code.
 
-![Public Certificate Verification Portal](docs/screenshot_public_verification.png)
+![Official Pre-Market Packaging Clearance Certificate](docs/screenshot_certificate.png)
 
 ---
 
