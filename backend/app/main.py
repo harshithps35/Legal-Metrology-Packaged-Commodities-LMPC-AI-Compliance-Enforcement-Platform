@@ -68,7 +68,13 @@ if SLOWAPI_AVAILABLE:
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
-# ---------- Health Check ----------
+# ---------- Health Check & Root Redirect ----------
+
+@app.get("/", include_in_schema=False)
+async def root():
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/docs")
+
 
 @app.get("/health", tags=["System"])
 async def health_check():
