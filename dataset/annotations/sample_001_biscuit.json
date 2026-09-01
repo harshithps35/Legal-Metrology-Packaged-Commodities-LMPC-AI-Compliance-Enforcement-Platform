@@ -1,0 +1,14 @@
+{
+  "filename": "sample_001_biscuit.jpg",
+  "product_name": "Parle-G Gold Biscuits",
+  "brand": "Parle",
+  "category": "food",
+  "annotation": {
+    "commodity_name": "Glucose Biscuits",
+    "net_quantity": 200.0,
+    "unit": "g",
+    "mrp": 30.0,
+    "usp": "0.15/g",
+    "compliant": true
+  }
+}

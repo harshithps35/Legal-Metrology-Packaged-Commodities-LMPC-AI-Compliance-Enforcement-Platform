@@ -1,0 +1,27 @@
+{
+  "image_filename": "sample_091_spices_compliant.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Catch Super Garam Masala Powder",
+    "brand": "Catch",
+    "category": "general",
+    "sector_group": "Spices & Condiments",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Super Garam Masala Powder",
+    "net_quantity": 100.0,
+    "net_quantity_unit": "g",
+    "mrp": 82.0,
+    "mrp_tampered": false,
+    "mfg_date": "05/2026",
+    "consumer_care_present": true,
+    "manufacturer_present": true,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "COMPLIANT",
+  "expected_violations": [],
+  "test_condition": "COMPLIANT",
+  "test_description": "Standard Fully Compliant Label"
+}

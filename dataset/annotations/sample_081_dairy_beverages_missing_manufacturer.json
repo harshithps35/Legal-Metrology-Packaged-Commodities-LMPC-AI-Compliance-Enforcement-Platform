@@ -1,0 +1,29 @@
+{
+  "image_filename": "sample_081_dairy_beverages_missing_manufacturer.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Mother Dairy Pasteurized Table Butter",
+    "brand": "Mother Dairy",
+    "category": "general",
+    "sector_group": "Perishable Dairy & Beverages",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Pasteurized Table Butter",
+    "net_quantity": 100.0,
+    "net_quantity_unit": "g",
+    "mrp": 58.0,
+    "mrp_tampered": false,
+    "mfg_date": "05/2026",
+    "consumer_care_present": true,
+    "manufacturer_present": false,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "NON_COMPLIANT",
+  "expected_violations": [
+    "RULE_6_1_A_NAME_ADDRESS"
+  ],
+  "test_condition": "MISSING_MANUFACTURER",
+  "test_description": "Rule 6(1)(a) Violation: Manufacturer address omitted"
+}

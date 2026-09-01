@@ -1,0 +1,29 @@
+{
+  "image_filename": "sample_027_edible_oil_missing_manufacturer.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Fortune Pure Desi Cow Ghee",
+    "brand": "Fortune",
+    "category": "general",
+    "sector_group": "Edible Oils & Ghee",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Pure Desi Cow Ghee",
+    "net_quantity": 500.0,
+    "net_quantity_unit": "ml",
+    "mrp": 360.0,
+    "mrp_tampered": false,
+    "mfg_date": "05/2026",
+    "consumer_care_present": true,
+    "manufacturer_present": false,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "NON_COMPLIANT",
+  "expected_violations": [
+    "RULE_6_1_A_NAME_ADDRESS"
+  ],
+  "test_condition": "MISSING_MANUFACTURER",
+  "test_description": "Rule 6(1)(a) Violation: Manufacturer address omitted"
+}

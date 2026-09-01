@@ -1,0 +1,14 @@
+{
+  "filename": "sample_002_edible_oil.jpg",
+  "product_name": "Fortune Sunlite Refined Sunflower Oil",
+  "brand": "Fortune",
+  "category": "food",
+  "annotation": {
+    "commodity_name": "Edible Refined Sunflower Oil",
+    "net_quantity": 1000.0,
+    "unit": "ml",
+    "mrp": 165.0,
+    "usp": "165.00/L",
+    "compliant": true
+  }
+}

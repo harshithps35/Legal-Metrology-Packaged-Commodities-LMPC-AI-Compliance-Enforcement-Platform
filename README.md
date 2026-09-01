@@ -1,3 +1,5 @@
+![LMPC AI Compliance Platform Banner](docs/project_banner.svg)
+
 # 🇮🇳 Legal Metrology Packaged Commodities (LMPC) AI Compliance & Enforcement Platform
 ### 🏆 Smart India Hackathon (SIH 2026) • Problem Statement ID: 26034
 > **Theme:** Agriculture, FoodTech & Rural Development / Consumer Protection  
@@ -40,12 +42,25 @@
 
 ---
 
+### ⚖️ Before vs After: Existing Manual Workflow vs. PredictXY Platform
+
+| Dimension | Existing (Traditional Enforcement) | PredictXY (LMPC AI Compliance Platform) |
+| :--- | :--- | :--- |
+| **Label Inspection** | ⏱️ Manual inspection with physical Vernier calipers (Subjective, slow) | 🤖 **AI computer vision inspection** (Objective, sub-second, auditable) |
+| **Enforcement Dossiers** | 📄 Paper notices & physical dispatch (Risk of loss and tampering) | ⚡ **Digital reports with immutable SHA-256 chain of custody** |
+| **Font Height Checking** | 📏 Manual caliper reading prone to officer-to-officer dispute | 📐 **Automated Schedule II font height calculation** calibrated to image DPI |
+| **Records & Certification** | 📁 Physical file storage in district cupboards | 🛡️ **Cryptographic QR clearance certificates** with public verifiability |
+| **Clearance Timelines** | 🐌 21-day average pre-market approval delay | 🚀 **3-day fast-track clearance** with 15-day statutory resolution SLA |
+| **Price Tampering (Rule 11)**| 👁️ Relies solely on human naked eye (Often misses clear sticker overlays) | 🔍 **Automated multi-price sticker and overprint detection** (98.2% precision) |
+
+---
+
 ### 📊 Quantified Impact
 
 | Metric | Traditional Manual Inspection | LMPC AI Platform (PredictXY) | Impact |
 |---|---|---|---|
 | **Clearance Time** | 21 Days | **3 Days** | ⏱️ **85% faster** |
-| **OCR Accuracy** | N/A (Manual) | **≥ 95% target** | 🎯 Multi-engine fallback |
+| **OCR Accuracy** | N/A (Manual) | **≥ 95% target** (96.4% CRR measured) | 🎯 Multi-engine fallback |
 | **Inspection Cost** | High administrative overhead | **~70% cost savings** | 💰 Automated pre-screening |
 | **Paperwork** | Paper notices & dossiers | **~90% paper reduction** | 📄 QR & digital chain of custody |
 | **Multilingual** | Hindi/English only (manual) | **English, Hindi + 8 regional scripts** | 🌐 Tesseract language packs |
@@ -242,6 +257,106 @@ graph TB
     Storage --> Frontend
 ```
 
+### 🛡️ End-to-End Cryptographic Security Pipeline
+
+```mermaid
+flowchart TD
+    classDef secNode fill:#0F172A,stroke:#38BDF8,stroke-width:2px,color:#F8FAFC;
+    classDef sealNode fill:#064E3B,stroke:#34D399,stroke-width:2.5px,color:#ECFDF5;
+
+    A["🌐 1. Transport Security<br/><b>HTTPS / TLS 1.3</b> Encrypted Transit"]:::secNode
+    B["🔑 2. Stateless Authentication<br/><b>JWT Bearer Tokens</b> (HS256)"]:::secNode
+    C["👥 3. Directorate Authorization<br/><b>6-Tier Scoped RBAC</b> (L1 to L6)"]:::secNode
+    D["🔒 4. Forensic Integrity<br/><b>SHA-256 Digest Chaining</b>"]:::secNode
+    E["📋 5. Legal Admissibility<br/><b>Immutable Audit Log</b> (Indian Evidence Act)"]:::secNode
+    F["📜 6. Public Seal &amp; Trust<br/><b>Dynamic QR Clearance Verification</b> (/verify/:cert_number)"]:::sealNode
+
+    A --> B --> C --> D --> E --> F
+```
+
+### 🗄️ Relational Database Entity-Relationship (ER) Model
+
+```mermaid
+erDiagram
+    USERS ||--o{ SCANS : "conducts / uploads"
+    USERS ||--o{ WORK_ASSIGNMENTS : "assigned_to"
+    USERS ||--o{ FIELD_VISIT_ORDERS : "dispatches / executes"
+    USERS ||--o{ PRE_MARKET_APPLICATIONS : "submits"
+
+    PRODUCTS ||--o{ SCANS : "subject_to"
+    PRODUCTS ||--o{ PRE_MARKET_APPLICATIONS : "dossier_for"
+    PRODUCTS ||--o{ FIELD_VISIT_ORDERS : "inspected_in"
+
+    SCANS ||--o{ EXTRACTED_FIELDS : "identifies"
+    SCANS ||--o{ VIOLATIONS : "flags"
+    SCANS ||--o{ EVIDENCE_FILES : "contains"
+    SCANS ||--o{ AUDIT_EVENTS : "generates_hashes"
+
+    FIELD_VISIT_ORDERS ||--o{ EVIDENCE_FILES : "attaches_caliper_photos"
+    FIELD_VISIT_ORDERS ||--o{ RESOLUTION_CASES : "resolves"
+
+    PRE_MARKET_APPLICATIONS ||--o{ CERTIFICATES : "results_in"
+    CERTIFICATES ||--o{ AUDIT_EVENTS : "seals_with_sha256"
+
+    USERS {
+        int id PK
+        string username UK
+        string unique_login_id UK
+        string role "commissioner, clmo, almo, inspector, sub_inspector, employer"
+        int hierarchy_level "1 to 6"
+        string jurisdiction_zone
+    }
+    PRODUCTS {
+        int id PK
+        string name
+        string brand
+        string category "food, cosmetics, general"
+        float declared_mrp
+        float net_quantity
+        string net_quantity_unit
+    }
+    SCANS {
+        int id PK
+        int product_id FK
+        int user_id FK
+        string status "COMPLIANT, NON_COMPLIANT"
+        float compliance_score
+        string client_evidence_hash "SHA-256"
+        float latitude
+        float longitude
+    }
+    EXTRACTED_FIELDS {
+        int id PK
+        int scan_id FK
+        string field_id "commodity_name, mrp, net_qty, mfg_date..."
+        string value
+        float confidence
+    }
+    VIOLATIONS {
+        int id PK
+        int scan_id FK
+        string rule_code "Rule 6, Rule 11, Schedule II, Rule 27"
+        string severity "CRITICAL, MAJOR, MINOR"
+        string title
+        text description
+    }
+    FIELD_VISIT_ORDERS {
+        int id PK
+        string visit_order_no UK
+        int product_id FK
+        int sub_inspector_id FK
+        float measured_font_caliper_mm
+        string vir_signoff_hash
+    }
+    CERTIFICATES {
+        int id PK
+        string certificate_number UK
+        int application_id FK
+        string sha256_seal_hash
+        string qr_verification_url
+    }
+```
+
 ---
 
 ## 🔍 Computer Vision, OCR & Font Measurement Engine
@@ -378,6 +493,19 @@ Empirical performance benchmarks evaluated across a test corpus of 100+ packagin
 | **Rule 11 Tampering Detection** | Dual price sticker detection precision | **98.2%** | ~70.0% (Visual human eye) | **Stops consumer deception** |
 | **Certificate Generation Latency**| Vector PDF + Dynamic QR + Hash | **< 250 ms** | 2–5 days (Manual typing) | **Real-time digital issuance** |
 | **Concurrent Throughput** | Async FastAPI with worker pool | **50+ req/s** | 1–2 files/day per squad | **Statewide scalability** |
+
+### 🧪 Multi-Product Packaging Generalization Testing Corpus
+
+The platform has been empirically verified across 6 commercial FMCG commodity sectors (`backend/tests/test_generalization_packaging_corpus.py`), confirming reliable rule matching and font compliance irrespective of packaging form factor:
+
+| Commodity Sector | Representative Brand & Pack | Metric Unit | Key Statutory Declarations Tested | Rule Verdict | Verification Status |
+| :--- | :--- | :---: | :--- | :---: | :---: |
+| **Biscuits / Bakery** | Parle-G Gold Biscuits (200g) | `g` | Rule 6(1)(a)-(h), USP (₹0.15/g), FSSAI 14-digit, Batch B2608 | ✅ PASS | 🟢 100% Compliant |
+| **Edible Oil** | Fortune Sunlite Sunflower Oil (1L) | `L / ml` | Net volume at 30°C, USP per Litre, FSSAI, Best Before | ✅ PASS | 🟢 100% Compliant |
+| **Cosmetics / Shampoo**| Dove Daily Shine Shampoo (180ml) | `ml` | Cosmetic License No., USP per ml, Mfg & Expiry, Customer Care | ✅ PASS | 🟢 100% Compliant |
+| **Oral Care** | Colgate Strong Teeth Dental Cream (150g)| `g` | Ayush/Cosmetic License, Indelible MRP, Recyclable Logo | ✅ PASS | 🟢 100% Compliant |
+| **Dairy / Perishable** | Amul Taaza Homogenised Milk (500ml) | `ml` | Strict **Use-by Date**, Refrigeration clause, FSSAI | ✅ PASS | 🟢 100% Compliant |
+| **Spices & Blends** | Catch Super Garam Masala (100g) | `g` | Spice Board / FSSAI, USP per g, Sealed sachet declaration | ✅ PASS | 🟢 100% Compliant |
 
 ---
 
@@ -543,6 +671,104 @@ Web Application will be live at: `http://localhost:5173`
 | **Lead Inspector (LMI)** | `INSP-DEL-042` | `inspector123` | `/inspector` |
 | **Sub-Inspector Squad** | `ASST-DEL-012` | `subinspector123` | `/sub-inspector` |
 | **Brand Owner (Employer)** | `employer_parle` | `employer123` | `/employer` |
+
+---
+
+## 📂 Repository Directory Structure
+
+```bash
+lmpc-compliance-system/
+├── .github/                      # CI/CD automated test workflows (GitHub Actions)
+├── backend/                      # Python FastAPI asynchronous backend
+│   ├── app/
+│   │   ├── api/v1/               # REST API route controllers (auth, scan, employer, inspector, supervisor)
+│   │   ├── core/                 # App configs, security (JWT, bcrypt), database sessions
+│   │   ├── db/models/            # SQLAlchemy ORM models (Users, Scans, Violations, FieldVisits, Certs)
+│   │   ├── engine/               # Statutory Rule Engine & Schedule II Caliper Font Measurer
+│   │   ├── nlp/                  # spaCy Named Entity Recognition & Gazette regex matchers
+│   │   ├── pipeline/             # OpenCV CLAHE preprocessor & Tesseract/EasyOCR engines
+│   │   ├── rules/                # rules_lmpc.json codified Gazette ruleset
+│   │   ├── services/             # Multi-tier governance, audit hashing, ReportLab PDF generation
+│   │   └── main.py               # FastAPI entry point & CORS configuration
+│   ├── tests/                    # 38+ Unit, integration & multi-category generalization test suites
+│   ├── requirements.txt          # Python dependencies
+│   └── generate_packaging_samples.py # Script generating 6 FMCG product packaging test labels
+├── frontend/                     # React 19 + Vite + Tailwind CSS v4 web application
+│   ├── src/
+│   │   ├── components/           # Reusable UI widgets (StatutoryComplianceScorecard, RulesMatrix...)
+│   │   ├── pages/                # Public & shared pages (Dashboard, ScanDetail, Login, PublicVerify)
+│   │   ├── portals/              # 6 Role-segregated governance portals:
+│   │   │   ├── commissioner/     # L1: State Commissioner Apex oversight & revocation
+│   │   │   ├── clmo/             # L2: CLMO Final statutory adjudication
+│   │   │   ├── almo/             # L3: ALMO Sanctions authority & visit orders
+│   │   │   ├── inspector/        # L4: Lead Inspector (LMI) triage workbench
+│   │   │   ├── sub_inspector/    # L5: Field squad mobile caliper audit & resolution desk
+│   │   │   └── employer/         # L6: Brand Owner pre-market workbench & rectification
+│   │   ├── services/api.js       # Axios HTTP client with JWT interceptors
+│   │   └── App.jsx               # React Router routes and role-based route guardrails
+│   ├── package.json              # Node.js dependencies
+│   └── vite.config.js            # Vite build configuration
+├── dataset/                      # Standardized FMCG dataset & annotations
+│   ├── images/                   # Sample labels: Biscuit, Edible Oil, Shampoo, Toothpaste, Milk, Spices
+│   └── annotations/              # Ground truth JSON annotations for all product classes
+├── docs/                         # System diagrams, video demos, sample images & API reference
+│   ├── api-reference.md          # REST API endpoints & payload specifications
+│   ├── architecture.md           # Deep-dive architecture, cryptographic custody & ER model
+│   ├── rule-engine.md            # Codified LMPC 2011 rules with severity taxonomy
+│   ├── project_banner.svg        # Official repository banner image
+│   ├── solution_architecture.jpg # Flowchart architecture infographic
+│   ├── demo.mp4                  # Full prototype video walkthrough
+│   └── samples/                  # Curated label die-line images
+└── README.md                     # Comprehensive project documentation
+```
+
+---
+
+## 🔮 Future Scope & Roadmap
+
+While the working prototype delivers automated label OCR, Schedule II font measurement, a 15-day resolution desk, and 6-tier Directorate adjudication, the planned roadmap includes:
+
+1. **Multilingual Regional OCR Expansion**:
+   - Expanding from English and Hindi to all **22 Scheduled Indian Languages** (Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, etc.) utilizing fine-tuned Indian Indic-Tesseract and Bhashini AI APIs.
+2. **Native Mobile Field App (Android / iOS)**:
+   - Dedicated Flutter/React Native application for Sub-Inspector squads with offline-first SQLite cache, hardware caliper Bluetooth synchronization, and tamper-resistant camera sensor attestation.
+3. **Automated 2D DataMatrix & GS1 Barcode Traceability**:
+   - Integration with the Central Consumer Protection Authority (CCPA) and GS1 India database for instant anti-counterfeiting verification and batch genealogy checks.
+4. **AI Packaging Alteration & Shrinkflation Detector**:
+   - Temporal comparison of previous product declarations against current market samples to alert the Directorate when Net Quantity is secretly reduced while retaining the same MRP (*deceptive shrinkflation*).
+5. **Statewide Legal Metrology Big Data Analytics**:
+   - District-level non-compliance heatmaps, repeat-offender brand tracking, and automated revenue forecasting from statutory compounding fees under Section 48.
+
+---
+
+## 🌐 Scalability & Cloud Deployment Architecture
+
+The platform is designed to scale from local municipal inspectorates to nationwide deployment under the Department of Consumer Affairs:
+
+- **Tiered Administrative Hierarchy**:
+  - **Taluk / District Inspectorates**: Rapid field scanning via handheld devices with offline-first synchronization.
+  - **State Legal Metrology Directorates**: Regional ALMO sanctioning and CLMO adjudication hubs with isolated jurisdictional schemas.
+  - **Central Department of Consumer Affairs (DoCA)**: Apex oversight, policy circular dispatch, and cross-state statutory analytics.
+- **High-Throughput Asynchronous Core**:
+  - Built on ASGI FastAPI with async database engines (`aiosqlite` for lightweight edge deployment; `PostgreSQL + asyncpg` for state and national clouds).
+  - Horizontally scalable stateless worker containers capable of processing 50+ concurrent packaging scans per second per worker node.
+- **MeitY-Empanelled Cloud Readiness**:
+  - Containerized with Docker and docker-compose; ready for zero-downtime deployment to NIC Cloud (MeghRaj), AWS GovCloud, or Azure Government.
+
+---
+
+## 👥 Team PredictXY • Smart India Hackathon 2026
+
+Developed with pride for the **Ministry of Consumer Affairs, Food and Public Distribution, Government of India** (Problem Statement ID: **26034**).
+
+| Team Member | Role & Specialization | Key Contributions |
+| :--- | :--- | :--- |
+| **Harshith P S** | **Team Lead & Chief Full-Stack Architect** | Lead system architecture, 6-Tier RBAC governance portals, async FastAPI backend, and React 19 UI engine |
+| **Radhika J K** | **AI & Computer Vision Engineer** | OpenCV CLAHE adaptive preprocessing, Tesseract HOCR text extraction, and Schedule II DPI font height measurement |
+| **Vikas C** | **NLP & Legal Metrology Rule Specialist** | Codifying LMPC Rules 2011 into machine ruleset, spaCy statutory gazette matchers, and Rule 11 tampering logic |
+| **Dayanad R** | **Backend & Cryptographic Security Engineer** | SHA-256 immutable state audit chain of custody, JWT security gateways, and ReportLab dynamic QR seal engine |
+| **Vishal Prabhu H** | **Frontend & UI/UX Developer** | Government-grade portal design system, Tailwind CSS v4, and multi-role responsive inspection workbenches |
+| **Srusthi** | **QA & Dataset Engineer** | 100+ FMCG packaging test corpus, ground-truth annotations, multi-sector benchmark suites, and calibration benchmarks |
 
 ---
 

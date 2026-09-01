@@ -1,0 +1,27 @@
+{
+  "image_filename": "sample_075_dairy_beverages_compliant.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Nandini Pasteurized Table Butter",
+    "brand": "Nandini",
+    "category": "general",
+    "sector_group": "Perishable Dairy & Beverages",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Pasteurized Table Butter",
+    "net_quantity": 100.0,
+    "net_quantity_unit": "g",
+    "mrp": 58.0,
+    "mrp_tampered": false,
+    "mfg_date": "05/2026",
+    "consumer_care_present": true,
+    "manufacturer_present": true,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "COMPLIANT",
+  "expected_violations": [],
+  "test_condition": "COMPLIANT",
+  "test_description": "Compact Panel Layout Compliant"
+}

@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="50%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0A0F1D" />
+    </linearGradient>
+    <linearGradient id="saffronGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF9933" />
+      <stop offset="100%" stop-color="#FF7700" />
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#138808" />
+      <stop offset="100%" stop-color="#0D6B04" />
+    </linearGradient>
+    <linearGradient id="blueGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1200" height="360" rx="20" fill="url(#bgGrad)" />
+  
+  <!-- Subtle Grid Pattern -->
+  <g opacity="0.06" stroke="#FFFFFF" stroke-width="1">
+    <line x1="0" y1="60" x2="1200" y2="60" />
+    <line x1="0" y1="120" x2="1200" y2="120" />
+    <line x1="0" y1="180" x2="1200" y2="180" />
+    <line x1="0" y1="240" x2="1200" y2="240" />
+    <line x1="0" y1="300" x2="1200" y2="300" />
+    <line x1="200" y1="0" x2="200" y2="360" />
+    <line x1="400" y1="0" x2="400" y2="360" />
+    <line x1="600" y1="0" x2="600" y2="360" />
+    <line x1="800" y1="0" x2="800" y2="360" />
+    <line x1="1000" y1="0" x2="1000" y2="360" />
+  </g>
+
+  <!-- Top Tricolor Ribbon -->
+  <rect x="0" y="0" width="1200" height="8" fill="url(#saffronGrad)" />
+  <rect x="0" y="8" width="1200" height="8" fill="#FFFFFF" opacity="0.9" />
+  <rect x="0" y="16" width="1200" height="8" fill="url(#greenGrad)" />
+
+  <!-- Badge / Pill: SIH 2026 -->
+  <g transform="translate(60, 50)">
+    <rect width="360" height="36" rx="18" fill="#1E293B" stroke="#3B82F6" stroke-width="1.5" />
+    <circle cx="20" cy="18" r="6" fill="#3B82F6" />
+    <text x="36" y="23" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#93C5FD" letter-spacing="1">
+      SMART INDIA HACKATHON 2026 • PS ID: 26034
+    </text>
+  </g>
+
+  <!-- Ministry Subtitle -->
+  <text x="60" y="118" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#94A3B8" letter-spacing="0.5">
+    DEPARTMENT OF CONSUMER AFFAIRS (DoCA) • GOVT. OF INDIA
+  </text>
+
+  <!-- Main Hero Title -->
+  <text x="60" y="168" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="44" font-weight="800" fill="#FFFFFF" letter-spacing="-0.5">
+    Legal Metrology (LMPC) AI Platform
+  </text>
+
+  <!-- Sub-title / Tagline -->
+  <text x="60" y="210" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="20" font-weight="500" fill="#CBD5E1">
+    End-to-End Packaged Commodities AI Verification, Caliper Font Audit &amp; QR Certification
+  </text>
+
+  <!-- Key Pillars Badges Row -->
+  <g transform="translate(60, 245)">
+    <!-- Badge 1: OCR & Vision -->
+    <rect x="0" y="0" width="190" height="38" rx="10" fill="#1E293B" stroke="#475569" stroke-width="1" />
+    <text x="16" y="24" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="600" fill="#E2E8F0">👁️ OpenCV &amp; Multi-OCR</text>
+    
+    <!-- Badge 2: Rule Engine -->
+    <rect x="205" y="0" width="195" height="38" rx="10" fill="#1E293B" stroke="#475569" stroke-width="1" />
+    <text x="221" y="24" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="600" fill="#E2E8F0">⚖️ LMPC 2011 Rule Engine</text>
+
+    <!-- Badge 3: 6-Tier RBAC -->
+    <rect x="415" y="0" width="180" height="38" rx="10" fill="#1E293B" stroke="#475569" stroke-width="1" />
+    <text x="431" y="24" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="600" fill="#E2E8F0">🏛️ 6-Tier Directorate</text>
+
+    <!-- Badge 4: SHA-256 Vault -->
+    <rect x="610" y="0" width="200" height="38" rx="10" fill="#1E293B" stroke="#475569" stroke-width="1" />
+    <text x="626" y="24" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="600" fill="#E2E8F0">🔒 SHA-256 Digital Seal</text>
+
+    <!-- Badge 5: Team PredictXY -->
+    <rect x="825" y="0" width="180" height="38" rx="10" fill="url(#blueGlow)" filter="url(#dropShadow)" />
+    <text x="845" y="24" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">🏆 Team PredictXY</text>
+  </g>
+
+  <!-- Performance Mini Banner on Right -->
+  <g transform="translate(930, 48)">
+    <rect width="210" height="150" rx="16" fill="#132038" stroke="#2563EB" stroke-width="1.5" filter="url(#dropShadow)" />
+    <text x="20" y="30" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="700" fill="#93C5FD" letter-spacing="1">EMPIRICAL SPEED</text>
+    <text x="20" y="68" font-family="'Plus Jakarta Sans', sans-serif" font-size="34" font-weight="800" fill="#10B981">1.42s</text>
+    <text x="20" y="90" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="500" fill="#94A3B8">Avg AI Scan Time</text>
+    <line x1="20" y1="104" x2="190" y2="104" stroke="#1E293B" stroke-width="1.5" />
+    <text x="20" y="125" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="700" fill="#F8FAFC">96.4% OCR CRR</text>
+    <text x="20" y="140" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="600" fill="#60A5FA">&lt; 250ms QR Cert</text>
+  </g>
+
+  <!-- Bottom Accent Line -->
+  <rect x="0" y="356" width="1200" height="4" fill="#3B82F6" opacity="0.6" />
+</svg>

@@ -1,0 +1,14 @@
+{
+  "filename": "sample_005_milk.jpg",
+  "product_name": "Amul Taaza Toned Milk",
+  "brand": "Amul",
+  "category": "food",
+  "annotation": {
+    "commodity_name": "Homogenised Toned Milk",
+    "net_quantity": 500.0,
+    "unit": "ml",
+    "mrp": 28.0,
+    "usp": "0.056/ml",
+    "compliant": true
+  }
+}

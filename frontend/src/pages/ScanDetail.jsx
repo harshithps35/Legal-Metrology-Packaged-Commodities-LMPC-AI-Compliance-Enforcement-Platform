@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { scanAPI } from '../services/api';
+import StatutoryComplianceScorecard from '../components/StatutoryComplianceScorecard';
 
 const statusStyles = {
   COMPLIANT: {
@@ -317,6 +318,13 @@ export default function ScanDetail() {
           </button>
         </div>
       )}
+
+      {/* Statutory Rule Scorecard Widget (Rule 6, Rule 11, Schedule II, Rule 27) */}
+      <StatutoryComplianceScorecard
+        score={score}
+        violations={violationsList}
+        className="mb-2"
+      />
 
       {/* Overview Metric Banner */}
       <div className="bg-white rounded-card border border-surface-border p-6 shadow-card grid grid-cols-1 md:grid-cols-4 gap-6 items-center">

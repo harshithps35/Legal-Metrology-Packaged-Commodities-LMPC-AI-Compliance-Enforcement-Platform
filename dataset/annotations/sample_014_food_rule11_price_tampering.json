@@ -1,0 +1,29 @@
+{
+  "image_filename": "sample_014_food_rule11_price_tampering.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Bikaji Instant Masala Noodles",
+    "brand": "Bikaji",
+    "category": "food",
+    "sector_group": "Food & Bakery",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Instant Masala Noodles",
+    "net_quantity": 280.0,
+    "net_quantity_unit": "g",
+    "mrp": 56.0,
+    "mrp_tampered": true,
+    "mfg_date": "05/2026",
+    "consumer_care_present": true,
+    "manufacturer_present": true,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "NON_COMPLIANT",
+  "expected_violations": [
+    "RULE_11_PRICE_TAMPERING"
+  ],
+  "test_condition": "RULE11_PRICE_TAMPERING",
+  "test_description": "Rule 11 Violation: Dual price sticker overlay"
+}

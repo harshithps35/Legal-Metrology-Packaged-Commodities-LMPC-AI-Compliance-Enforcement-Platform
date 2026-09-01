@@ -1,0 +1,29 @@
+{
+  "image_filename": "sample_022_edible_oil_font_too_small.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Emami Refined Soyabean Oil",
+    "brand": "Emami",
+    "category": "general",
+    "sector_group": "Edible Oils & Ghee",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Refined Soyabean Oil",
+    "net_quantity": 1.0,
+    "net_quantity_unit": "l",
+    "mrp": 140.0,
+    "mrp_tampered": false,
+    "mfg_date": "05/2026",
+    "consumer_care_present": true,
+    "manufacturer_present": true,
+    "font_compliant": false
+  },
+  "ground_truth_verdict": "NON_COMPLIANT",
+  "expected_violations": [
+    "RULE_SCHEDULE_II_FONT_HEIGHT"
+  ],
+  "test_condition": "FONT_TOO_SMALL",
+  "test_description": "Schedule II Violation: Font size below statutory minimum"
+}

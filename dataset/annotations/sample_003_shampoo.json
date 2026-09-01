@@ -1,0 +1,14 @@
+{
+  "filename": "sample_003_shampoo.jpg",
+  "product_name": "Dove Daily Shine Shampoo",
+  "brand": "Dove",
+  "category": "cosmetics",
+  "annotation": {
+    "commodity_name": "Shampoo",
+    "net_quantity": 180.0,
+    "unit": "ml",
+    "mrp": 190.0,
+    "usp": "1.05/ml",
+    "compliant": true
+  }
+}

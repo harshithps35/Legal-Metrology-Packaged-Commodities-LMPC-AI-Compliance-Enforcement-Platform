@@ -1,0 +1,14 @@
+{
+  "filename": "sample_004_toothpaste.jpg",
+  "product_name": "Colgate Strong Teeth Dental Cream",
+  "brand": "Colgate",
+  "category": "cosmetics",
+  "annotation": {
+    "commodity_name": "Toothpaste",
+    "net_quantity": 150.0,
+    "unit": "g",
+    "mrp": 95.0,
+    "usp": "0.63/g",
+    "compliant": true
+  }
+}

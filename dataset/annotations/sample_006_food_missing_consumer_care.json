@@ -1,0 +1,29 @@
+{
+  "image_filename": "sample_006_food_missing_consumer_care.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Kellogg's Rolled Oats",
+    "brand": "Kellogg's",
+    "category": "food",
+    "sector_group": "Food & Bakery",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Rolled Oats",
+    "net_quantity": 500.0,
+    "net_quantity_unit": "g",
+    "mrp": 110.0,
+    "mrp_tampered": false,
+    "mfg_date": "05/2026",
+    "consumer_care_present": false,
+    "manufacturer_present": true,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "NON_COMPLIANT",
+  "expected_violations": [
+    "RULE_6_1_G_CONSUMER_CARE"
+  ],
+  "test_condition": "MISSING_CONSUMER_CARE",
+  "test_description": "Rule 6(1)(g) Violation: Consumer care contact missing"
+}

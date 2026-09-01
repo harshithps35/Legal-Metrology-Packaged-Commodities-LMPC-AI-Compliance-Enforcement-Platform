@@ -1,0 +1,29 @@
+{
+  "image_filename": "sample_097_spices_missing_date.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Maggi Super Garam Masala Powder",
+    "brand": "Maggi",
+    "category": "general",
+    "sector_group": "Spices & Condiments",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Super Garam Masala Powder",
+    "net_quantity": 100.0,
+    "net_quantity_unit": "g",
+    "mrp": 82.0,
+    "mrp_tampered": false,
+    "mfg_date": null,
+    "consumer_care_present": true,
+    "manufacturer_present": true,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "NON_COMPLIANT",
+  "expected_violations": [
+    "RULE_6_1_D_DATE_MANUFACTURE"
+  ],
+  "test_condition": "MISSING_DATE",
+  "test_description": "Rule 6(1)(d) Violation: Manufacturing date missing"
+}

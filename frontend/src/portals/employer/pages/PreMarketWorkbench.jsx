@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { employerAPI, scanAPI } from '../../../services/api';
 import toast from 'react-hot-toast';
+import StatutoryComplianceScorecard from '../../../components/StatutoryComplianceScorecard';
 
 export default function PreMarketWorkbench() {
   const navigate = useNavigate();
@@ -393,6 +394,13 @@ export default function PreMarketWorkbench() {
               </div>
             ) : (
               <div className="space-y-4">
+                {/* Statutory Rules Scorecard (Rule 6, Rule 11, Schedule II, Rule 27) */}
+                <StatutoryComplianceScorecard
+                  score={selfTestResult.compliance_score || 0}
+                  violations={selfTestResult.violations || []}
+                  compact={true}
+                />
+
                 {/* Score Banner */}
                 <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-center justify-between">
                   <div>

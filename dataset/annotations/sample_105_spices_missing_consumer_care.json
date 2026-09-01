@@ -1,0 +1,29 @@
+{
+  "image_filename": "sample_105_spices_missing_consumer_care.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Everest Traditional Mango Pickle",
+    "brand": "Everest",
+    "category": "general",
+    "sector_group": "Spices & Condiments",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Traditional Mango Pickle",
+    "net_quantity": 400.0,
+    "net_quantity_unit": "g",
+    "mrp": 110.0,
+    "mrp_tampered": false,
+    "mfg_date": "05/2026",
+    "consumer_care_present": false,
+    "manufacturer_present": true,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "NON_COMPLIANT",
+  "expected_violations": [
+    "RULE_6_1_G_CONSUMER_CARE"
+  ],
+  "test_condition": "MISSING_CONSUMER_CARE",
+  "test_description": "Rule 6(1)(g) Violation: Consumer care contact missing"
+}

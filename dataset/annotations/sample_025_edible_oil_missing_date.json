@@ -1,0 +1,29 @@
+{
+  "image_filename": "sample_025_edible_oil_missing_date.jpg",
+  "annotator": "Srusthi (QA Engineer)",
+  "annotation_date": "2026-09-01",
+  "product_info": {
+    "product_name": "Patanjali Refined Sunflower Oil",
+    "brand": "Patanjali",
+    "category": "general",
+    "sector_group": "Edible Oils & Ghee",
+    "package_type": "box"
+  },
+  "ground_truth_fields": {
+    "commodity_name": "Refined Sunflower Oil",
+    "net_quantity": 1.0,
+    "net_quantity_unit": "l",
+    "mrp": 165.0,
+    "mrp_tampered": false,
+    "mfg_date": null,
+    "consumer_care_present": true,
+    "manufacturer_present": true,
+    "font_compliant": true
+  },
+  "ground_truth_verdict": "NON_COMPLIANT",
+  "expected_violations": [
+    "RULE_6_1_D_DATE_MANUFACTURE"
+  ],
+  "test_condition": "MISSING_DATE",
+  "test_description": "Rule 6(1)(d) Violation: Manufacturing date missing"
+}
