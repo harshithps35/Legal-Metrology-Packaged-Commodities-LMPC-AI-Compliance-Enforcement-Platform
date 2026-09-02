@@ -182,8 +182,12 @@ class TesseractOCR:
         if tesseract_cmd or settings.TESSERACT_CMD != "tesseract":
             pytesseract.pytesseract.tesseract_cmd = tesseract_cmd or settings.TESSERACT_CMD
 
-    def extract(self, image: object) -> OCRResult:
+    def extract(self, image: object, original_image: Optional[object] = None) -> OCRResult:
         """Run Tesseract OCR and return structured results with bounding boxes."""
+        # If pytesseract not installed or tesseract not in PATH, use Windows Media OCR directly
+        if pytesseract is None:
+            return self._extract_with_winocr(image, original_image=original_image)
+
         # Get dimensions
         if np is not None and isinstance(image, np.ndarray):
             h, w = image.shape[:2]
@@ -201,9 +205,6 @@ class TesseractOCR:
         config = f"--psm {self.psm} --oem {self.oem}"
 
         try:
-            if pytesseract is None:
-                raise ImportError("pytesseract not installed")
-
             # Try Tesseract OCR
             data = pytesseract.image_to_data(
                 gray,
@@ -260,37 +261,50 @@ class TesseractOCR:
 
         except Exception as e:
             logger.info(f"Tesseract OCR not in PATH ({e}). Using Windows Native Media OCR engine.")
-            return self._extract_with_winocr(image)
+            return self._extract_with_winocr(image, original_image=original_image)
 
-    def _extract_with_winocr(self, image: object) -> OCRResult:
+    def _extract_with_winocr(self, image: object, original_image: Optional[object] = None) -> OCRResult:
         """Run Windows Media OCR on real image to extract exact lines and words."""
         try:
             import winocr
             from PIL import Image as PILImage
 
-            if isinstance(image, PILImage.Image):
-                pil_img = image
-            elif np is not None and isinstance(image, np.ndarray):
-                if len(image.shape) == 2:
-                    pil_img = PILImage.fromarray(image).convert('RGBA')
+            # Prefer the clean RGB original image for Windows Media OCR rather than heavily filtered grayscale
+            target_source = original_image if original_image is not None else image
+
+            if isinstance(target_source, PILImage.Image):
+                pil_img = target_source.convert('RGBA')
+            elif np is not None and isinstance(target_source, np.ndarray):
+                if len(target_source.shape) == 2:
+                    pil_img = PILImage.fromarray(target_source).convert('RGBA')
                 else:
-                    rgb = image[:, :, ::-1]
+                    rgb = cv2.cvtColor(target_source, cv2.COLOR_BGR2RGB) if cv2 is not None else target_source[:, :, ::-1]
                     pil_img = PILImage.fromarray(rgb).convert('RGBA')
-            elif isinstance(image, str) and os.path.exists(image):
-                pil_img = PILImage.open(image).convert('RGBA')
+            elif isinstance(target_source, str) and os.path.exists(target_source):
+                pil_img = PILImage.open(target_source).convert('RGBA')
             else:
                 pil_img = PILImage.new('RGBA', (800, 600), (255, 255, 255, 255))
 
-            w, h = pil_img.size
+            orig_w, orig_h = pil_img.size
+
+            # Intelligent upscale for small/medium packaging artwork to improve OCR accuracy
+            scale = 1.0
+            if orig_w < 1600 or orig_h < 1200:
+                scale = 2.5
+
+            if scale > 1.0:
+                ocr_img = pil_img.resize((int(orig_w * scale), int(orig_h * scale)), PILImage.Resampling.LANCZOS)
+            else:
+                ocr_img = pil_img
 
             # Synchronous winocr call
             if hasattr(winocr, "recognize_pil_sync"):
-                ocr_res = winocr.recognize_pil_sync(pil_img, lang='en')
+                ocr_res = winocr.recognize_pil_sync(ocr_img, lang='en')
             else:
                 import concurrent.futures
                 import asyncio
                 with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-                    future = executor.submit(asyncio.run, winocr.recognize_pil(pil_img, lang='en'))
+                    future = executor.submit(asyncio.run, winocr.recognize_pil(ocr_img, lang='en'))
                     ocr_res = future.result()
 
             tokens: list[OCRToken] = []
@@ -307,17 +321,17 @@ class TesseractOCR:
                     if isinstance(word, dict):
                         w_text = word.get("text", "")
                         br = word.get("bounding_rect", {})
-                        bx = int(br.get("x", 0))
-                        by = int(br.get("y", 0))
-                        bw = int(br.get("width", 0))
-                        bh = int(br.get("height", 0))
+                        bx = int(br.get("x", 0) / scale)
+                        by = int(br.get("y", 0) / scale)
+                        bw = int(br.get("width", 0) / scale)
+                        bh = int(br.get("height", 0) / scale)
                     else:
                         w_text = getattr(word, "text", "")
                         br = getattr(word, "bounding_rect", None)
-                        bx = int(getattr(br, "x", 0)) if br else 0
-                        by = int(getattr(br, "y", 0)) if br else 0
-                        bw = int(getattr(br, "width", 0)) if br else 0
-                        bh = int(getattr(br, "height", 0)) if br else 0
+                        bx = int(getattr(br, "x", 0) / scale) if br else 0
+                        by = int(getattr(br, "y", 0) / scale) if br else 0
+                        bw = int(getattr(br, "width", 0) / scale) if br else 0
+                        bh = int(getattr(br, "height", 0) / scale) if br else 0
 
                     tok = OCRToken(
                         text=w_text,
@@ -342,8 +356,8 @@ class TesseractOCR:
                 raw_text=raw_text,
                 tokens=tokens,
                 lines=lines,
-                image_width=w,
-                image_height=h,
+                image_width=orig_w,
+                image_height=orig_h,
                 engine='winocr',
                 avg_confidence=avg_conf,
                 language='en',
@@ -361,12 +375,11 @@ class TesseractOCR:
                 language="en",
             )
 
-    def extract_with_multiple_psm(self, image: np.ndarray) -> OCRResult:
-        """Try multiple page segmentation modes and return the best result.
+    def extract_with_multiple_psm(self, image: np.ndarray, original_image: Optional[object] = None) -> OCRResult:
+        """Try multiple page segmentation modes and return the best result."""
+        if pytesseract is None:
+            return self._extract_with_winocr(image, original_image=original_image)
 
-        Useful for labels with mixed layouts (tabular + free-form text).
-        Picks the result with the highest average confidence.
-        """
         best_result: Optional[OCRResult] = None
         best_confidence = -1.0
         original_psm = self.psm
@@ -375,7 +388,10 @@ class TesseractOCR:
             for psm in [6, 11, 3]:
                 self.psm = psm
                 try:
-                    result = self.extract(image)
+                    result = self.extract(image, original_image=original_image)
+                    # If it fell back to winocr, return immediately without looping
+                    if result.engine == 'winocr':
+                        return result
                     if result.avg_confidence > best_confidence and len(result.tokens) > 0:
                         best_confidence = result.avg_confidence
                         best_result = result
@@ -472,6 +488,7 @@ def get_ocr_engine() -> TesseractOCR | GoogleVisionOCR:
 def extract_text_from_image(
     image: np.ndarray,
     try_multiple_psm: bool = True,
+    original_image: Optional[object] = None,
 ) -> OCRResult:
     """High-level convenience function: image → OCR result.
 
@@ -479,6 +496,7 @@ def extract_text_from_image(
         image: Preprocessed grayscale or BGR image.
         try_multiple_psm: If True and using Tesseract, try multiple
                           page segmentation modes for best results.
+        original_image: Optional clean RGB/BGR source image before destructive preprocessing.
 
     Returns:
         OCRResult with all tokens, lines, and bounding boxes.
@@ -486,7 +504,9 @@ def extract_text_from_image(
     engine = get_ocr_engine()
 
     if isinstance(engine, TesseractOCR) and try_multiple_psm:
-        return engine.extract_with_multiple_psm(image)
+        return engine.extract_with_multiple_psm(image, original_image=original_image)
+    if isinstance(engine, TesseractOCR):
+        return engine.extract(image, original_image=original_image)
 
     return engine.extract(image)
 
@@ -543,8 +563,8 @@ def run_ocr_pipeline(
     else:
         ocr_input = img
 
-    # Run OCR
-    ocr_result = extract_text_from_image(ocr_input)
+    # Run OCR (pass original image so modern engines like winocr receive clean color pixels)
+    ocr_result = extract_text_from_image(ocr_input, original_image=img)
 
     return {
         "ocr_result": ocr_result.to_dict(),
